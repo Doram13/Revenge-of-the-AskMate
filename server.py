@@ -7,9 +7,9 @@ app = Flask(__name__)
 
 
 @app.route('/')
+@app.route('/list')
 def index():
-    return "Hello Revenge"
-
+    return render_template(list.html)
 
 
 
