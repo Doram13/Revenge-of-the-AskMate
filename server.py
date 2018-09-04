@@ -12,6 +12,12 @@ def index():
     questions = datamanager.get_questions()
     return render_template("list.html", questions = questions, header = datamanager.list_header)
 
+@app.route('/add-question', methods=['GET', 'POST'])
+def add_question():
+    if request.method == 'GET':
+        return render_template('add-question.html')
+
+
 
 if __name__ == "__main__":
     app.run(

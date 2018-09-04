@@ -1,4 +1,5 @@
 import connection
+import time
 
 question_header = ['id','submission_time','view_number','vote_number','title','message','image']
 list_header = ['id','submission_time','view_number','vote_number','title']
@@ -15,3 +16,7 @@ def get_new_id():
     for dict_of_q in list_of_q:
         ids.append(dict_of_q['id'])
     return len(ids) + 1
+
+
+def get_timestamp():
+    return int(time.time())
