@@ -19,6 +19,10 @@ def add_question():
     if request.method == 'POST':
         return redirect('/')
 
+@app.route('/list/question/{{id}}')
+    def display_question(id):
+        return render_template('display-question.html', question=, id=id)
+
 
 
 if __name__ == "__main__":
