@@ -18,17 +18,19 @@ def get_question_by_id(id):
 
 
 def append_question(dict_to_append):
-    dict_to_append['id'] = get_new_id()
+    dict_to_append['id'] = get_id()
     dict_to_append['submission_time'] = get_timestamp()
+    dict_to_append['vote_number'] = 0
+    dict_to_append['view_number'] = 0
     connection.append_to_csvfile(QUESTION_FILE, dict_to_append, question_header)
 
 
-def get_new_id():
+def get_id():
     ids = []
     list_of_q = connection.read_file(QUESTION_FILE)
     for dict_of_q in list_of_q:
         ids.append(dict_of_q['id'])
-    return len(ids) + 1
+    return len(ids)
 
 
 def get_timestamp():
