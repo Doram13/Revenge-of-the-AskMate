@@ -1,5 +1,6 @@
 import connection
 import time
+from datetime import datetime
 
 question_header = ['id','submission_time','view_number','vote_number','title','message','image']
 list_header = ['id','submission_time','view_number','vote_number','title']
@@ -7,6 +8,7 @@ QUESTION_FILE = "question.csv"
 
 def get_questions():
     list_of_questions = connection.read_file(QUESTION_FILE)
+    convert_timestamp(list_of_questions)
     return list_of_questions
 
 
@@ -35,3 +37,9 @@ def get_id():
 
 def get_timestamp():
     return int(time.time())
+
+
+def convert_timestamp(convertable):
+    for i in convertable:
+        i['submission_time'] = datetime.fromtimestamp(int(i['submission_time']))
+    return convertable
