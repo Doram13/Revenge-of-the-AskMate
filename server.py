@@ -20,12 +20,12 @@ def add_question():
         new_dict = request.form.to_dict()
         datamanager.append_question(new_dict)
         _id = datamanager.get_id() - 1
-        return redirect(url_for('display_question', id=_id))
+        return redirect(url_for('display_question', _id=_id))
 
 
-@app.route('/question/<id>')
+@app.route('/question/<_id>')
 def display_question(_id):
-    question = datamanager.get_question_by_id(_idid)
+    question = datamanager.get_question_by_id(_id)
     return render_template('display-question.html', id=_id, question=question, header = datamanager.list_header)
 
 
