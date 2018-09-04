@@ -2,26 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-   # <title>{{ question["title"] }}</title>
-    <style>table, th, td {border: 1px solid black;}</style>
+    <title>{{ question["title"] }}</title>
+    <style>h4, table {border: 1px solid black;}</style>
 </head>
 <body>
-<h1> #{{ question ["title"] }}</h1>
-    <table style="width:100%">
-        <tr>
-            {% for item in header %}
-                <th>{{ item }}</th>
-            {% endfor %}
-        </tr>
+    <h1> {{ question ["title"] }}</h1>
+        <h3><label>Question Message:</label></h3>
+        <h4><p>{{ question["message"] }} </p></h4>
+        <h5><p>Vote Number:</p> </h5>
+        <p>{{ question["vote_number"] }} vote(s)</p>
+        {{ question("image") if image is defined }}<br>
+        <h5><p>Answers:</p> </h5>
+        {% for a in answers %}
+        <table>
             <tr>
-                <td align="center">{{ question["id"] }}</td>
-                <td align="center">{{ question["submission_time"] }}</td>
-                <td align="center">{{ question["view_number"] }} view(s)</td>
-                <td align="center">{{ question["vote_number"] }} vote(s)</td>
-                <td style="width:15%" align="center">{{ question["title"] }} </td>
-                <td style="width:50%" align="center">{{ question["message"] }} </td>
-                <td style="width:50%" align="center">{{ question["image"] }} </td>
+                <td style="width:10%" align="center">{{ a["id"] }}</td>
+                <td style="width:10%" align="center">{{ a["submission_time"] }}</td>
+                <td style="width:10%" align="center">{{ a["vote_number"] }}</td>
+                <td style="width:10%" align="center">{{ a["message"] }}</td>
+                <td style="width:10%" align="center">{{ a("image") if image is defined}}</td>
             </tr>
+        {% endfor %}
+
+
+        </table>
+
     <h2><a href='/add-answer'> Add New Answer</a></h2>
 </body>
 </html>
