@@ -16,6 +16,8 @@ def index():
 def add_question():
     if request.method == 'GET':
         return render_template('add-question.html')
+    if request.method == 'POST':
+        return redirect('/')
 
 
 
