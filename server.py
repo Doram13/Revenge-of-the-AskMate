@@ -9,7 +9,9 @@ app = Flask(__name__)
 @app.route('/list')
 def index():
     questions = datamanager.get_questions()
-    return render_template("list.html", questions = questions, header = datamanager.list_header)
+    return render_template("list.html",
+                           questions = questions,
+                           header = datamanager.list_header)
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
@@ -26,7 +28,12 @@ def add_question():
 @app.route('/question/<_id>')
 def display_question(_id):
     question = datamanager.get_question_by_id(_id)
-    return render_template('display-question.html', id=_id, question=question, header = datamanager.list_header)
+    answers = datamanager.get_answers_by_id(_id)
+    return render_template('display-question.html',
+                           id=_id,
+                           answers = answers,
+                           question=question,
+                           header = datamanager.answer_header)
 
 
 

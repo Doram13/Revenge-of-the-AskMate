@@ -4,6 +4,7 @@ from datetime import datetime
 
 question_header = ['id','submission_time','view_number','vote_number','title','message','image']
 list_header = ['id','submission_time','view_number','vote_number','title']
+answer_header = ['id','submission_time','vote_number','message','image']
 QUESTION_FILE = "question.csv"
 ANSWER_FILE = 'answer.csv'
 
@@ -45,7 +46,11 @@ def convert_timestamp(convertable):
         i['submission_time'] = datetime.fromtimestamp(int(i['submission_time']))
     return convertable
 
-def get_answers():
+def get_answers_by_id(_id):
+    needed_answers = []
     list_of_answers = connection.read_file(ANSWER_FILE)
     convert_timestamp(list_of_answers)
-    return list_of_answers[::-1]
+    for answer in list_of_answers:
+        if answer['question_id'] == _id:
+            needed_answers.append(answer)
+    return needed_answers[::-1]
