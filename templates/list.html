@@ -2,9 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Ask Mate</title>
+    <style>table, th, td {border: 1px solid black;}</style>
 </head>
 <body>
-
+    <h1>Ask Mate</h1>
+<h2><a href='/add-question'> Add New Question</a></h2>
+    <table style="width:100%">
+        <tr>
+            {% for item in header %}
+                <th>{{ item }}</th>
+            {% endfor %}
+        </tr>
+        {% for story in user_stories %}
+            <tr>
+                <td align="center"><a href="/question/{{ questions["id"] }}">{{ questions["id"] }}</a></td>
+                <td style="width:10%" align="center">{{ questions["submission_time"] }}</td>
+                <td style="width:10%" align="center">{{ questions["view_number"] view(s) }}</td>
+                <td style="width:10%" align="center">{{ questions["vote_number"] vote(s) }}</td>
+                <td style="width:40%" align="center">{{ questions["title"] }} </td>
+            </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>
