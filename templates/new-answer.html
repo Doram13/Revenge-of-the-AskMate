@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Post an Answer</title>
+    <style> form {border: 1px solid black;}</style>
+</head>
+<body>
+<form method="POST" action="{{ url_for("post_answer") }}" >
+        <label for="message"> Answer:</label><br>
+        <textarea id="message" name="message" rows="8" cols="80" required></textarea><br>
+    <button type="submit">Add New Answer</button>
+    </form><br>
+    <h2><a href='/list'> Go back to the homepage</a></h2>
+</body>
+</html>
