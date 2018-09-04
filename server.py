@@ -9,7 +9,6 @@ app = Flask(__name__)
 @app.route('/list')
 def index():
     questions = datamanager.get_questions()
-    questions = sort(questions)
     return render_template("list.html", questions = questions, header = datamanager.list_header)
 
 

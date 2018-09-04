@@ -9,7 +9,7 @@ QUESTION_FILE = "question.csv"
 def get_questions():
     list_of_questions = connection.read_file(QUESTION_FILE)
     convert_timestamp(list_of_questions)
-    return list_of_questions
+    return list_of_questions[::-1]
 
 
 def get_question_by_id(id):
