@@ -10,6 +10,19 @@ def get_questions():
     return list_of_questions
 
 
+def get_question_by_id(id):
+    list_of_question = connection.read_file(QUESTION_FILE)
+    for question in list_of_question:
+        if question['id'] == id:
+            return question
+
+
+def append_question(dict_to_append):
+    dict_to_append['id'] = get_new_id()
+    dict_to_append['submission_time'] = get_timestamp()
+    connection.append_to_csvfile(QUESTION_FILE, dict_to_append, question_header)
+
+
 def get_new_id():
     ids = []
     list_of_q = connection.read_file(QUESTION_FILE)

@@ -1,13 +1,15 @@
 import csv
 
 def read_file(file_path):
-    with open(file_path, 'r') as f:
-        reader = csv.DictReader(f)
+    with open(file_path, 'r') as csv_file:
+        reader = csv.DictReader(csv_file)
         list_of_dicts = [dict(line) for line in reader]
     return list_of_dicts
 
-def write_question():
-    return None
+def append_to_csvfile(file_path, dict_to_append, data_header):
+    with open(file_path, 'a') as csv_file:
+        writer = csv.DictWriter(csv_file, fieldnames=data_header)
+        writer.writerow(dict_to_append)
 
 
 def read_answers():
