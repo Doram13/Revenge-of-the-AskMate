@@ -11,10 +11,15 @@
         <h4><p>{{ question["message"] }} </p></h4>
         <h5><p>Vote Number:</p> </h5>
         <p>{{ question["vote_number"] }} vote(s)</p>
-        {{ question("image") if image is defined }}<br>
+        {{ question("image") if image is defined }}
         <h5><p>Answers:</p> </h5>
-        {% for a in answers %}
+
         <table>
+        { % for head in header % }
+            <th>{{ head }}</th>
+            {% endfor %}
+
+            {% for a in answers %}
             <tr>
                 <td style="width:5%" align="center">{{ a["id"] }}</td>
                 <td style="width:5%" align="center">{{ a["submission_time"] }}</td>
