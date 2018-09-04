@@ -9,16 +9,16 @@ answer_header_for_file = ['id','submission_time','vote_number', 'question_id', '
 QUESTION_FILE = "question.csv"
 ANSWER_FILE = 'answer.csv'
 
+
 def get_questions():
     list_of_questions = connection.read_file(QUESTION_FILE)
-    convert_timestamp(list_of_questions)
-    return list_of_questions[::-1]
+    return list_of_questions
 
 
-def get_question_by_id(id):
+def get_question_by_id(_id):
     list_of_question = connection.read_file(QUESTION_FILE)
     for question in list_of_question:
-        if question['id'] == id:
+        if question['id'] == _id:
             return question
 
 
@@ -30,9 +30,9 @@ def append_question(dict_to_append):
     connection.append_to_csvfile(QUESTION_FILE, dict_to_append, question_header)
 
 
-def get_id(FILE):
+def get_id(file):
     ids = []
-    list_of_file = connection.read_file(FILE)
+    list_of_file = connection.read_file(file)
     for dict_of_file in list_of_file:
         ids.append(dict_of_file['id'])
     return len(ids)
@@ -63,3 +63,12 @@ def append_answer(dict_to_append, question_id):
     dict_to_append['vote_number'] = 0
     dict_to_append['question_id'] = question_id
     connection.append_to_csvfile(ANSWER_FILE, dict_to_append, answer_header_for_file)
+
+
+def increase_view_number(_id):
+    list_of_questions = get_questions()
+    for question in list_of_questions:
+        if question['id'] == _id:
+            question['view_number'] = int(question['view_number']) + 1
+    connection.update_file(QUESTION_FILE, list_of_questions, question_header)
+

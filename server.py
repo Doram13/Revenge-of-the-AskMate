@@ -8,9 +8,9 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/list')
 def index():
-    questions = datamanager.get_questions()
+    questions = datamanager.convert_timestamp(datamanager.get_questions())
     return render_template("list.html",
-                           questions = questions,
+                           questions = questions[::-1],
                            header = datamanager.list_header)
 
 
@@ -27,6 +27,7 @@ def add_question():
 
 @app.route('/question/<_id>')
 def display_question(_id):
+    datamanager.increase_view_number(_id)
     question = datamanager.get_question_by_id(_id)
     answers = datamanager.get_answers_by_id(_id)
     return render_template('display-question.html',
