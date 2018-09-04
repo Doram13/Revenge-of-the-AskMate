@@ -37,7 +37,7 @@
 
         </table>
 
-    <h2><a href='/add-answer'> Add New Answer</a></h2><br>
+    <h2><a href="{{ url_for("post_answer", question_id=question["id"]) }}"> Add New Answer</a></h2><br>
     <h2><a href='/list'> Go back to the homepage</a></h2>
 </body>
 </html>

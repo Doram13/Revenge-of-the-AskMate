@@ -36,6 +36,14 @@ def display_question(_id):
                            header = datamanager.answer_header)
 
 
+@app.route('/question/<question_id>/new-answer',  methods=['GET', 'POST'])
+def post_answer(question_id):
+    if request.method == 'GET':
+        return render_template('new-answer.html', question_id = question_id)
+    else:
+        pass
+
+
 
 if __name__ == "__main__":
     app.run(
