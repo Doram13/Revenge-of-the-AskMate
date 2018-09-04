@@ -1,5 +1,4 @@
 from flask import Flask, render_template, redirect, request, url_for
-import connection
 import datamanager
 
 
@@ -12,6 +11,7 @@ def index():
     questions = datamanager.get_questions()
     return render_template("list.html", questions = questions, header = datamanager.list_header)
 
+
 @app.route('/add-question', methods=['GET', 'POST'])
 def add_question():
     if request.method == 'GET':
@@ -21,6 +21,7 @@ def add_question():
         datamanager.append_question(new_dict)
         id = datamanager.get_id() - 1
         return redirect(url_for('display_question', id=id))
+
 
 @app.route('/question/<id>')
 def display_question(id):
