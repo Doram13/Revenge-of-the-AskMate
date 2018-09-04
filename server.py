@@ -9,9 +9,8 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/list')
 def index():
-    return render_template(list.html, questions = questions, header = datamanager.list_header)
-
-
+    questions = datamanager.get_questions()
+    return render_template("list.html", questions = questions, header = datamanager.list_header)
 
 
 if __name__ == "__main__":
