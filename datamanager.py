@@ -5,6 +5,7 @@ from datetime import datetime
 question_header = ['id','submission_time','view_number','vote_number','title','message','image']
 list_header = ['id','submission_time','view_number','vote_number','title']
 answer_header = ['id','submission_time','vote_number','message','image']
+answer_header_for_file = ['id','submission_time','vote_number', 'question_id', 'message','image']
 QUESTION_FILE = "question.csv"
 ANSWER_FILE = 'answer.csv'
 
@@ -22,18 +23,18 @@ def get_question_by_id(id):
 
 
 def append_question(dict_to_append):
-    dict_to_append['id'] = get_id()
+    dict_to_append['id'] = get_id(QUESTION_FILE)
     dict_to_append['submission_time'] = get_timestamp()
     dict_to_append['vote_number'] = 0
     dict_to_append['view_number'] = 0
     connection.append_to_csvfile(QUESTION_FILE, dict_to_append, question_header)
 
 
-def get_id():
+def get_id(FILE):
     ids = []
-    list_of_q = connection.read_file(QUESTION_FILE)
-    for dict_of_q in list_of_q:
-        ids.append(dict_of_q['id'])
+    list_of_file = connection.read_file(FILE)
+    for dict_of_file in list_of_file:
+        ids.append(dict_of_file['id'])
     return len(ids)
 
 
@@ -54,3 +55,11 @@ def get_answers_by_id(_id):
         if answer['question_id'] == _id:
             needed_answers.append(answer)
     return needed_answers[::-1]
+
+
+def append_answer(dict_to_append, question_id):
+    dict_to_append['id'] = get_id(ANSWER_FILE)
+    dict_to_append['submission_time'] = get_timestamp()
+    dict_to_append['vote_number'] = 0
+    dict_to_append['question_id'] = question_id
+    connection.append_to_csvfile(ANSWER_FILE, dict_to_append, answer_header_for_file)
