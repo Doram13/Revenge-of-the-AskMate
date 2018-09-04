@@ -16,10 +16,10 @@
         {% for a in answers %}
         <table>
             <tr>
-                <td style="width:10%" align="center">{{ a["id"] }}</td>
-                <td style="width:10%" align="center">{{ a["submission_time"] }}</td>
-                <td style="width:10%" align="center">{{ a["vote_number"] }}</td>
-                <td style="width:10%" align="center">{{ a["message"] }}</td>
+                <td style="width:5%" align="center">{{ a["id"] }}</td>
+                <td style="width:5%" align="center">{{ a["submission_time"] }}</td>
+                <td style="width:5%" align="center">{{ a["vote_number"] }}</td>
+                <td style="width:60%" align="center">{{ a["message"] }}</td>
                 <td style="width:10%" align="center">{{ a("image") if image is defined}}</td>
             </tr>
         {% endfor %}
