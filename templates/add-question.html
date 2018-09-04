@@ -2,11 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>New Question</title>
+    <style>table, th, td {border: 1px solid black;}</style>
 </head>
 <body>
-
-
-
+<h1>Add New Question:</h1><br>
+    <form method="POST" action="{{ url_for("add_question") }}" >
+        <label for="title"> Title</label><br>
+        <input id="title" type="text" name="title" size="100" minlength="5" required><br>
+        <label for="message"> Message</label><br>
+        <textarea id="message" name="message" rows="5" cols="80" required></textarea><br>
+    <button type="submit">Add New Question</button>
+    </form>
 </body>
 </html>
