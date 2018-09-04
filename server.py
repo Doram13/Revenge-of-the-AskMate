@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, url_for
 import connection
 import datamanager
 
@@ -17,9 +17,12 @@ def add_question():
     if request.method == 'GET':
         return render_template('add-question.html')
     if request.method == 'POST':
-        return redirect('/')
+        new_dict = request.form.to_dict()
+        datamanager.append_question(new_dict)
+        id = datamanager.get_id() - 1
+        return redirect(url_for('display_question', id=id))
 
-@app.route('/list/question/<id>')
+@app.route('/question/<id>')
 def display_question(id):
     question = datamanager.get_question_by_id(id)
     return render_template('display-question.html', id=id, question=question, header = datamanager.list_header)
