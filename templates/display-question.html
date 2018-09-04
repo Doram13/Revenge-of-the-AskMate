@@ -12,12 +12,14 @@
         <h5><p>Vote Number:</p> </h5>
         <p>{{ question["vote_number"] }} vote(s)</p>
         {{ question("image") if image is defined }}
-        <h5><p>Answers:</p> </h5>
 
+        {% if answers %}
+        <h5><p>Answers:</p> </h5>
         <table>
         {% for head in header %}
             <th>{{ head }}</th>
-            {% endfor %}
+        {% endfor %}
+
 
             {% for a in answers %}
             <tr>
@@ -28,6 +30,9 @@
                 <td style="width:10%" align="center">{{ a("image") if image is defined}}</td>
             </tr>
         {% endfor %}
+        {% else %}
+            <h5>There are no answer for this question yet.</h5>
+        {% endif %}
 
 
         </table>
