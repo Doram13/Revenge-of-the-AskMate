@@ -19,9 +19,10 @@ def add_question():
     if request.method == 'POST':
         return redirect('/')
 
-@app.route('/list/question/{{id}}')
-    def display_question(id):
-        return render_template('display-question.html', question=, id=id)
+@app.route('/list/question/<id>')
+def display_question(id):
+    question = datamanager.get_question_by_id(id)
+    return render_template('display-question.html', id=id, question=question, header = datamanager.list_header)
 
 
 

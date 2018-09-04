@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-   # <title>{{ XY [title] }}</title>
+   # <title>{{ question["title"] }}</title>
     <style>table, th, td {border: 1px solid black;}</style>
 </head>
 <body>
-<h1> #{{ XY title }}</h1>
+<h1> #{{ question ["title"] }}</h1>
     <table style="width:100%">
         <tr>
             {% for item in header %}
@@ -14,13 +14,13 @@
             {% endfor %}
         </tr>
             <tr>
-                <td align="center">{{ q["id"] }}</td>
-                <td align="center">{{ q["submission_time"] }}</td>
-                <td align="center">{{ q["view_number"] }} view(s)</td>
-                <td align="center">{{ q["vote_number"] }} vote(s)</td>
-                <td style="width:15%" align="center">{{ q["title"] }} </td>
-                <td style="width:50%" align="center">{{ q["message"] }} </td>
-                <td style="width:50%" align="center">{{ q["image"] }} </td>
+                <td align="center">{{ question["id"] }}</td>
+                <td align="center">{{ question["submission_time"] }}</td>
+                <td align="center">{{ question["view_number"] }} view(s)</td>
+                <td align="center">{{ question["vote_number"] }} vote(s)</td>
+                <td style="width:15%" align="center">{{ question["title"] }} </td>
+                <td style="width:50%" align="center">{{ question["message"] }} </td>
+                <td style="width:50%" align="center">{{ question["image"] }} </td>
             </tr>
     <h2><a href='/add-answer'> Add New Answer</a></h2>
 </body>
