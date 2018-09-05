@@ -35,9 +35,9 @@
             <h5>There are no answer for this question yet.</h5>
         {% endif %}
 
-    <h2><a href="{{ url_for("post_answer", question_id=question["id"]) }}"> Add New Answer</a></h2>
-    <h2><a href="{{ url_for("edit_question", question_id=question["id"]) }}"> Update Question</a></h2>
-    <h2><a href="{{ url_for("post_answer", question_id=question["id"]) }}"> Delete Question</a></h2>
+    <h3><a href="{{ url_for("post_answer", question_id=question["id"]) }}"> Add New Answer</a>
+    <a href="{{ url_for("edit_question", question_id=question["id"]) }}"> Update Question</a>
+    <a href="{{ url_for("post_answer", question_id=question["id"]) }}"> Delete Question</a></h3>
     <h2><a href='/list'> Go back to the homepage</a></h2>
 </body>
 </html>

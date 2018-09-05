@@ -47,7 +47,7 @@ def post_answer(question_id):
         return redirect(url_for('display_question', _id=question_id))
 
 
-@app.route('/question/<question_id>/edit', methods=['GET', 'POS,T'])
+@app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
 def edit_question(question_id):
     if request.method == 'GET':
         question_to_edit = datamanager.get_question_by_id(question_id)
