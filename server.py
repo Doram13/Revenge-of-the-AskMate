@@ -60,6 +60,13 @@ def edit_question(question_id):
         return redirect(url_for('display_question', _id = question_id))
 
 
+@app.route('/question/<question_id>/delete')
+def delete_question(question_id):
+    datamanager.delete_question(question_id)
+    datamanager.delete_answers(question_id)
+    return redirect('/')
+
+
 if __name__ == "__main__":
     app.run(
       debug=True,
