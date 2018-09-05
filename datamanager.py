@@ -72,3 +72,11 @@ def increase_view_number(_id):
             question['view_number'] = int(question['view_number']) + 1
     connection.update_file(QUESTION_FILE, list_of_questions, question_header)
 
+
+def update_question(_id, edited_dict):
+    list_of_questions = get_questions()
+    for question in list_of_questions:
+        if question['id'] == _id:
+            question.update(edited_dict)
+    connection.update_file(QUESTION_FILE, list_of_questions, question_header)
+

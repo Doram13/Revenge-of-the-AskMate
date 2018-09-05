@@ -20,7 +20,7 @@
                 <td align="center">{{ question["submission_time"] }}</td>
                 <td style="width:10%" align="center">{{ question["view_number"] }} view(s)</td>
                 <td style="width:10%" align="center">{{ question["vote_number"] }} vote(s)</td>
-                <td style="width:50%" align="center">{{ question["title"] }} </td>
+                <td style="width:50%" align="center"><a href="/question/{{ question["id"] }}">{{ question["title"] }} </td>
             </tr>
         {% endfor %}
     </table>
