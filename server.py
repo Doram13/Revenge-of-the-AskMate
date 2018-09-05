@@ -46,7 +46,6 @@ def post_answer(question_id):
         return redirect(url_for('display_question', _id=question_id))
 
 
-
 if __name__ == "__main__":
     app.run(
       debug=True,
