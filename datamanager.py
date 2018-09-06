@@ -103,3 +103,10 @@ def delete_answers(_id):
             new_data.append(answer)
     connection.update_file(ANSWER_FILE, new_data, answer_header_for_file)
 
+def delete_one_answer(_id):
+    new_data = []
+    list_of_answers = get_answers()
+    for answer in list_of_answers:
+        if answer['id'] != _id:
+            new_data.append(answer)
+    connection.update_file(ANSWER_FILE, new_data, answer_header_for_file)

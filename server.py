@@ -66,6 +66,11 @@ def delete_question(question_id):
     datamanager.delete_answers(question_id)
     return redirect('/')
 
+@app.route('/<question_id>/answer/<_id>/delete')
+def delete_answer(_id, question_id):
+    datamanager.delete_one_answer(_id)
+    return redirect(url_for('display_question', _id=question_id))
+
 
 if __name__ == "__main__":
     app.run(
