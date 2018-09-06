@@ -21,7 +21,7 @@ def add_question():
     if request.method == 'POST':
         new_dict = request.form.to_dict()
         datamanager.append_question(new_dict)
-        _id = datamanager.get_id() - 1
+        _id = datamanager.get_id('question.csv') - 1
         return redirect(url_for('display_question', _id=_id))
 
 
