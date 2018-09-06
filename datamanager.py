@@ -15,6 +15,11 @@ def get_questions():
     return list_of_questions
 
 
+def get_answers():
+    list_of_answers = connection.read_file(ANSWER_FILE)
+    return list_of_answers
+
+
 def get_question_by_id(_id):
     list_of_question = connection.read_file(QUESTION_FILE)
     for question in list_of_question:
@@ -71,4 +76,30 @@ def increase_view_number(_id):
         if question['id'] == _id:
             question['view_number'] = int(question['view_number']) + 1
     connection.update_file(QUESTION_FILE, list_of_questions, question_header)
+
+
+def update_question(_id, edited_dict):
+    list_of_questions = get_questions()
+    for question in list_of_questions:
+        if question['id'] == _id:
+            question.update(edited_dict)
+    connection.update_file(QUESTION_FILE, list_of_questions, question_header)
+
+
+def delete_question(_id):
+    new_data = []
+    list_of_questions = get_questions()
+    for question in list_of_questions:
+        if question['id'] != _id:
+            new_data.append(question)
+    connection.update_file(QUESTION_FILE, new_data, question_header)
+
+
+def delete_answers(_id):
+    new_data = []
+    list_of_answers = get_answers()
+    for answer in list_of_answers:
+        if answer['question_id'] != _id:
+            new_data.append(answer)
+    connection.update_file(ANSWER_FILE, new_data, answer_header_for_file)
 
