@@ -9,6 +9,8 @@
     <form method="POST" action="{{ url_for("post_answer", question_id=question_id) }}" >
         <label for="message"> Answer:</label><br>
         <textarea id="message" name="message" rows="8" cols="80" required></textarea><br>
+        <label for="image">URL for image</label>
+        <input type="text" id="image" name="image">
         <button type="submit">Add New Answer</button>
     </form><br>
     <h2><a href='/list'> Go back to the homepage</a></h2>
