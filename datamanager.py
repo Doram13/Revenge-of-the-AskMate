@@ -1,6 +1,7 @@
 import connection
 import time
 from datetime import datetime
+from operator import itemgetter
 
 question_header = ['id','submission_time','view_number','vote_number','title','message','image']
 list_header = ['id','submission_time','view_number','vote_number','title']
@@ -51,6 +52,7 @@ def convert_timestamp(convertable):
     for i in convertable:
         i['submission_time'] = datetime.fromtimestamp(int(i['submission_time']))
     return convertable
+
 
 def get_answers_by_id(_id):
     needed_answers = []
@@ -103,6 +105,7 @@ def delete_answers(_id):
             new_data.append(answer)
     connection.update_file(ANSWER_FILE, new_data, answer_header_for_file)
 
+
 def delete_one_answer(_id):
     new_data = []
     list_of_answers = get_answers()
@@ -110,3 +113,17 @@ def delete_one_answer(_id):
         if answer['id'] != _id:
             new_data.append(answer)
     connection.update_file(ANSWER_FILE, new_data, answer_header_for_file)
+
+
+def order_list_by_key(key, order):
+    unordered_list = get_questions()
+    for question in unordered_list:
+        question['view_number'] = int(question['view_number'])
+        question['vote_number'] = int(question['vote_number'])
+        question['id'] = int(question['id'])
+        question['title'] = question['title'].capitalize()
+    if order == 'desc':
+        sorted_list = sorted(unordered_list, key=itemgetter(key), reverse=True)
+    elif order == 'asc':
+        sorted_list = sorted(unordered_list, key=itemgetter(key), reverse=False)
+    connection.update_file(QUESTION_FILE, sorted_list, question_header)

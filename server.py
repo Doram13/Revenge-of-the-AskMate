@@ -6,11 +6,10 @@ app = Flask(__name__)
 
 
 @app.route('/')
-@app.route('/list')
 def index():
-    questions = datamanager.convert_timestamp(datamanager.get_questions())
+    questions = datamanager.get_questions()
     return render_template("list.html",
-                           questions = questions[::-1],
+                           questions = datamanager.convert_timestamp(questions),
                            header = datamanager.list_header)
 
 
@@ -70,6 +69,13 @@ def delete_question(question_id):
 def delete_answer(_id, question_id):
     datamanager.delete_one_answer(_id)
     return redirect(url_for('display_question', _id=question_id))
+
+
+@app.route('/list')
+def order_list():
+    datamanager.order_list_by_key(request.args['order_by'], request.args['order_direction'])
+    return redirect('/')
+
 
 
 if __name__ == "__main__":

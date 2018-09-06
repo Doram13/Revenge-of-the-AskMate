@@ -14,7 +14,10 @@
     <table style="width:100%">
         <tr>
             {% for item in header %}
-                <th><a href="list?order_by={{ item }}">{{ item }}</th>
+                <th><a href="/list?order_by={{ item }}&order_direction=desc">↧</a>
+                    {{ item }}
+                <a href="/list?order_by={{ item }}&order_direction=asc">↥</a>
+                </th>
             {% endfor %}
         </tr>
         {% for question in questions %}
@@ -25,8 +28,8 @@
                     </form>
                 </td>
                 <td style="width: 10%" align="center">{{ question["submission_time"] }}</td>
-                <td style="width:5%" align="center">{{ question["view_number"] }} view(s)</td>
-                <td style="width:5%" align="center">{{ question["vote_number"] }} vote(s)</td>
+                <td style="width:10%" align="center">{{ question["view_number"] }} view(s)</td>
+                <td style="width:10%" align="center">{{ question["vote_number"] }} vote(s)</td>
                 <td style="width:50%" align="center">{{ question["title"] }} </td>
             </tr>
         {% endfor %}
