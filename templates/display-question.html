@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ question["title"] }}</title>
-    <style>h4, table {border: 1px solid black;}</style>
+    <style>h4, table, td {border: 1px solid black;}</style>
 </head>
 <body>
     <h1> {{ question ["title"] }}</h1>
         <h3><label>Question Message:</label></h3>
         <h4><p>{{ question["message"] }} </p></h4>
-        <h4><p>Vote Number:</p> </h4>
-    <p><a href="/question/{{ question["id"] }}/up">↥</a>{{ question["vote_number"] }} vote(s) <a href="/question/{{ question["id"] }}/down">↧</a></p>
+        <h3><p>Vote Number:</p> </h3>
+    <h3><p><a href="/question/{{ question["id"] }}/up">↥</a>{{ question["vote_number"] }} vote(s) <a href="/question/{{ question["id"] }}/down">↧</a></p></h3>
         {{ question("image") if image is defined }}
 
         {% if answers %}
-        <h4><p>Answers:</p> </h4>
-        <table>
+        <h3><p>Answers:</p> </h3>
+        <table style="border: 1px solid ">
         {% for head in header %}
             <th>{{ head }}</th>
         {% endfor %}
