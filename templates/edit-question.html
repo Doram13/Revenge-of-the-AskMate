@@ -11,8 +11,10 @@
         <input id="title" value="{{question['title']}}" name="title" size="100" minlength="5" required><br>
         <label for="message"> Message</label><br>
         <textarea id="message" name="message" rows="5" cols="80" required>{{ question['message'] }}</textarea><br>
+        <label for="image">URL for image</label>
+        <input type="text" id="image" name="image" value="{{ question['image'] }}">
     <button type="submit">Update Question</button>
-    </form><br>
-    <h2><a href='/'> Go back to the homepage</a></h2>
+</form><br>
+<h2><a href='/'> Go back to the homepage</a></h2>
 </body>
 </html>
