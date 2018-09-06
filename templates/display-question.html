@@ -9,12 +9,12 @@
     <h1> {{ question ["title"] }}</h1>
         <h3><label>Question Message:</label></h3>
         <h4><p>{{ question["message"] }} </p></h4>
-        <h5><p>Vote Number:</p> </h5>
-        <p>{{ question["vote_number"] }} vote(s)</p>
+        <h4><p>Vote Number:</p> </h4>
+    <p><a href="/question/{{ question["id"] }}/up">↥</a>{{ question["vote_number"] }} vote(s) <a href="/question/{{ question["id"] }}/down">↧</a></p>
         {{ question("image") if image is defined }}
 
         {% if answers %}
-        <h5><p>Answers:</p> </h5>
+        <h4><p>Answers:</p> </h4>
         <table>
         {% for head in header %}
             <th>{{ head }}</th>
@@ -25,7 +25,8 @@
             <tr>
                 <td style="width:5%" align="center">{{ a["id"] }}</td>
                 <td style="width:5%" align="center">{{ a["submission_time"] }}</td>
-                <td style="width:5%" align="center">{{ a["vote_number"] }}</td>
+                <td style="width:10%" align="center"><a href="/question/{{ question['id'] }}/answer/{{ a["id"] }}/up">↥</a>
+                    {{ a["vote_number"] }} <a href="/question/{{ question['id'] }}/answer/{{ a["id"] }}/down">↧</a></td>
                 <td style="width:60%" align="center">{{ a["message"] }}</td>
                 <td style="width:20%" align="center">{{ a("image") if image is defined}}</td>
                 <td style="width:5%" align="center">
@@ -42,6 +43,6 @@
     <h3><a href="{{ url_for("post_answer", question_id=question["id"]) }}"> Add New Answer</a><br>
     <a href="{{ url_for("edit_question", question_id=question["id"]) }}"> Update Question</a><br>
     <a href="/question/{{ question['id'] }}/delete"> Delete Question</a></h3>
-    <h2><a href='/list'> Go back to the homepage</a></h2>
+    <h2><a href='/'> Go back to the homepage</a></h2>
 </body>
 </html>
