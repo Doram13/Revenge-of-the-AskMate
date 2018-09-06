@@ -14,7 +14,7 @@
     <table style="width:100%">
         <tr>
             {% for item in header %}
-                <th>{{ item }}</th>
+                <th><a href="list?order_by={{ item }}">{{ item }}</th>
             {% endfor %}
         </tr>
         {% for question in questions %}
