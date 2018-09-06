@@ -6,7 +6,6 @@ app = Flask(__name__)
 
 
 @app.route('/')
-@app.route('/list')
 def index():
     questions = datamanager.convert_timestamp(datamanager.get_questions())
     return render_template("list.html",
