@@ -1,3 +1,4 @@
 id,submission_time,vote_number,question_id,message,image
-0,1493398154,4,0,You need to use brackets: my_list = [],
-1,1493088154,36,0,Look it up in the Python docs,
+0,1493398154,4,0,"You need to use brackets: my_list = []",
+1,1493088154,35,0,"Look it up in the Python docs",
+2,1536237846,0,3,A hűségről:,https://scontent-vie1-1.xx.fbcdn.net/v/t1.0-9/40685456_10156839442443982_7567144733831593984_n.jpg?_nc_cat=1&oh=f606b805078fa7e4c2f8a31e256aea6c&oe=5BF1BBD8
