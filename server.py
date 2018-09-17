@@ -75,26 +75,21 @@ def order_list():
     return redirect('/')
 
 
-@app.route("/question/<q_id>/up")
-def q_up_vote(q_id):
-    datamanager.increase_q_vote(q_id)
+@app.route("/question/<q_id>/<direction>")
+def q_up_vote(q_id, direction):
+    if direction == 'up':
+        datamanager.change_q_vote(q_id, 1)
+    else:
+        datamanager.change_q_vote(q_id, -1)
     return redirect(url_for('display_question', _id=q_id))
 
 
-@app.route("/question/<q_id>/down")
-def q_down_vote(q_id):
-    datamanager.decrease_q_vote(q_id)
-    return redirect(url_for('display_question', _id=q_id))
-
-
-@app.route("/question/<q_id>/answer/<a_id>/up")
-def a_up_vote(a_id, q_id):
-    datamanager.increase_a_vote(a_id)
-    return redirect(url_for('display_question', _id=q_id))
-
-@app.route("/question/<q_id>/answer/<a_id>/down")
-def a_down_vote(a_id, q_id):
-    datamanager.decrease_a_vote(a_id)
+@app.route("/question/<q_id>/answer/<a_id>/<direction>")
+def a_up_vote(a_id, q_id, direction):
+    if direction == 'up':
+        datamanager.change_a_vote(a_id, 1)
+    else:
+        datamanager.change_a_vote(a_id, -1)
     return redirect(url_for('display_question', _id=q_id))
 
 

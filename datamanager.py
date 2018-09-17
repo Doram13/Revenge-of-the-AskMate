@@ -128,31 +128,17 @@ def order_list_by_key(key, order):
     connection.update_file(QUESTION_FILE, sorted_list, question_header)
 
 
-def increase_q_vote(_id):
+def change_q_vote(_id, number):
     list_of_questions = get_questions()
     for question in list_of_questions:
         if question['id'] == _id:
-            question['vote_number'] = int(question['vote_number']) + 1
+            question['vote_number'] = int(question['vote_number']) + number
     connection.update_file(QUESTION_FILE, list_of_questions, question_header)
 
 
-def decrease_q_vote(_id):
-    list_of_questions = get_questions()
-    for question in list_of_questions:
-        if question['id'] == _id:
-            question['vote_number'] = int(question['vote_number']) - 1
-    connection.update_file(QUESTION_FILE, list_of_questions, question_header)
-
-def increase_a_vote(_id):
+def change_a_vote(_id, number):
     list_of_answers = get_answers()
     for answer in list_of_answers:
         if answer['id'] == _id:
-            answer['vote_number'] = int(answer['vote_number']) + 1
-    connection.update_file(ANSWER_FILE, list_of_answers, answer_header_for_file)
-
-def decrease_a_vote(_id):
-    list_of_answers = get_answers()
-    for answer in list_of_answers:
-        if answer['id'] == _id:
-            answer['vote_number'] = int(answer['vote_number']) -1
+            answer['vote_number'] = int(answer['vote_number']) + number
     connection.update_file(ANSWER_FILE, list_of_answers, answer_header_for_file)
