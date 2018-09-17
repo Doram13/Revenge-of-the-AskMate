@@ -11,8 +11,12 @@ QUESTION_FILE = "question.csv"
 ANSWER_FILE = 'answer.csv'
 
 
-def get_questions():
-    list_of_questions = connection.read_file(QUESTION_FILE)
+@connection.connection_handler
+def get_questions(cursor):
+    cursor.execute("""
+                    SELECT * FROM question;
+                   """)
+    list_of_questions = cursor.fetchall()
     return list_of_questions
 
 

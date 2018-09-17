@@ -9,7 +9,7 @@ app = Flask(__name__)
 def index():
     questions = datamanager.get_questions()
     return render_template("list.html",
-                           questions = datamanager.convert_timestamp(questions),
+                           questions = questions,
                            header = datamanager.list_header)
 
 
