@@ -15,9 +15,10 @@ ANSWER_FILE = 'answer.csv'
 def get_questions(cursor):
     cursor.execute("""
                     SELECT * FROM question;
-                   """)
+ """)
     list_of_questions = cursor.fetchall()
     return list_of_questions
+
 
 
 def get_answers():
@@ -25,11 +26,14 @@ def get_answers():
     return list_of_answers
 
 
-def get_question_by_id(_id):
-    list_of_question = connection.read_file(QUESTION_FILE)
-    for question in list_of_question:
-        if question['id'] == _id:
-            return question
+@connection.connection_handler
+def get_question_by_id(cursor, _id):
+    cursor.execute("""
+    SELECT * FROM question
+    WHERE id= %(_id)s;
+    """, {"_id": _id})
+    question = cursor.fetchone()
+    return question
 
 
 def append_question(dict_to_append):
