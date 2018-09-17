@@ -14,7 +14,8 @@ ANSWER_FILE = 'answer.csv'
 @connection.connection_handler
 def get_questions(cursor):
     cursor.execute("""
-                    SELECT * FROM question;
+                    SELECT * FROM question
+                    ORDER BY id;
  """)
     list_of_questions = cursor.fetchall()
     return list_of_questions
@@ -32,7 +33,7 @@ def get_answers(cursor):
 def get_question_by_id(cursor, _id):
     cursor.execute("""
     SELECT * FROM question
-    WHERE id= %(_id)s;
+    WHERE id= %(_id)s;      
     """, {"_id": _id})
     question = cursor.fetchone()
     return question
@@ -87,13 +88,14 @@ def append_answer(cursor, question_id, message, image):
                     """,
                    {'time': datetime.now(), 'question_id': question_id, 'message': message, 'image': image})
 
-
-def increase_view_number(_id):
-    list_of_questions = get_questions()
-    for question in list_of_questions:
-        if question['id'] == _id:
-            question['view_number'] = int(question['view_number']) + 1
-    connection.update_file(QUESTION_FILE, list_of_questions, question_header)
+@connection.connection_handler
+def increase_view_number(cursor, _id):
+    cursor.execute("""
+                    UPDATE question 
+                    SET view_number = view_number + 1
+                    WHERE id = %(_id)s
+                    """,
+                   {'_id': _id})
 
 
 def update_question(_id, edited_dict):
