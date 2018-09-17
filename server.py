@@ -39,8 +39,7 @@ def post_answer(question_id):
     if request.method == 'GET':
         return render_template('new-answer.html', question_id=question_id)
 
-    answer = request.form.to_dict()
-    datamanager.append_answer(answer,question_id)
+    datamanager.append_answer(question_id, request.form['message'], request.form['image'])
     return redirect(url_for('display_question', _id=question_id))
 
 

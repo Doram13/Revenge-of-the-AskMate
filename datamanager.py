@@ -79,12 +79,13 @@ def get_answers_by_id(cursor, _id):
     return answers
 
 
-def append_answer(dict_to_append, question_id):
-    dict_to_append['id'] = get_id(ANSWER_FILE)
-    dict_to_append['submission_time'] = get_timestamp()
-    dict_to_append['vote_number'] = 0
-    dict_to_append['question_id'] = question_id
-    connection.append_to_csvfile(ANSWER_FILE, dict_to_append, answer_header_for_file)
+@connection.connection_handler
+def append_answer(cursor, question_id, message, image):
+    cursor.execute("""
+                    INSERT INTO answer (submission_time, vote_number, question_id, message, image) 
+                    VALUES (%(time)s, 0, %(question_id)s, %(message)s, %(image)s)
+                    """,
+                   {'time': datetime.now(), 'question_id': question_id, 'message': message, 'image': image})
 
 
 def increase_view_number(_id):
