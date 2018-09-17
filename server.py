@@ -17,8 +17,9 @@ def index():
 def add_question():
     if request.method == 'GET':
         return render_template('add-question.html')
-
-    _id = datamanager.append_question(request.form.to_dict())
+    _id = datamanager.append_question(request.form['message'],
+                                      request.form['title'],
+                                      request.form['image'])
     return redirect(url_for('display_question', _id=_id))
 
 
@@ -28,15 +29,15 @@ def display_question(_id):
     question = datamanager.get_question_by_id(_id)
     answers = datamanager.get_answers_by_id(_id)
     return render_template('display-question.html',
-                           answers = answers,
+                           answers=answers,
                            question=question,
-                           header = datamanager.answer_header)
+                           header=datamanager.answer_header)
 
 
 @app.route('/question/<question_id>/new-answer',  methods=['GET', 'POST'])
 def post_answer(question_id):
     if request.method == 'GET':
-        return render_template('new-answer.html', question_id = question_id)
+        return render_template('new-answer.html', question_id=question_id)
 
     answer = request.form.to_dict()
     datamanager.append_answer(answer,question_id)

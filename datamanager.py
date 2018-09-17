@@ -38,13 +38,17 @@ def get_question_by_id(cursor, _id):
     return question
 
 
-def append_question(dict_to_append):
-    dict_to_append['id'] = get_id(QUESTION_FILE)
-    dict_to_append['submission_time'] = get_timestamp()
-    dict_to_append['vote_number'] = 0
-    dict_to_append['view_number'] = 0
-    connection.append_to_csvfile(QUESTION_FILE, dict_to_append, question_header)
-    return dict_to_append['id']
+@connection.connection_handler
+def append_question(cursor, message, title, image):
+    cursor.execute("""
+                    INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
+                    VALUES (%(submission_time)s, 0, 0, %(title)s, %(message)s, %(image)s);
+                    SELECT id FROM question
+                    ORDER BY id LIMIT 1;
+                    """,
+                   {'submission_time': datetime.now(), 'title': title, 'message': message, 'image': image})
+    _id = cursor.fetchall()
+    return _id[0]['id']
 
 
 def get_id(file):
@@ -65,14 +69,14 @@ def convert_timestamp(convertable):
     return convertable
 
 
-def get_answers_by_id(_id):
-    needed_answers = []
-    list_of_answers = connection.read_file(ANSWER_FILE)
-    convert_timestamp(list_of_answers)
-    for answer in list_of_answers:
-        if answer['question_id'] == _id:
-            needed_answers.append(answer)
-    return needed_answers[::-1]
+@connection.connection_handler
+def get_answers_by_id(cursor, _id):
+    cursor.execute("""
+    SELECT * FROM answer
+    WHERE question_id= %(_id)s;
+    """, {"_id": _id})
+    answers = cursor.fetchall()
+    return answers
 
 
 def append_answer(dict_to_append, question_id):
