@@ -76,7 +76,7 @@ def order_list():
 
 
 @app.route("/question/<q_id>/<direction>")
-def q_up_vote(q_id, direction):
+def question_vote(q_id, direction):
     if direction == 'up':
         datamanager.change_q_vote(q_id, 1)
     else:
@@ -85,7 +85,7 @@ def q_up_vote(q_id, direction):
 
 
 @app.route("/question/<q_id>/answer/<a_id>/<direction>")
-def a_up_vote(a_id, q_id, direction):
+def answer_vote(a_id, q_id, direction):
     if direction == 'up':
         datamanager.change_a_vote(a_id, 1)
     else:

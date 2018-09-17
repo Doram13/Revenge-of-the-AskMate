@@ -14,51 +14,54 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <div class='container'><h1> {{ question ["title"] }}</h1>
+<div class='container'><h1> {{ question ["title"] }}</h1>
     <h3><label>Question Message:</label></h3>
     <h4>{{ question["message"] }} </h4>
     {% if question['image'] %}
-    <h3><a target="_blank" href={{ question['image'] }} >Link to image</a></></h3>
+        <h3><a target="_blank" href={{ question['image'] }}>Link to image</a></h3>
     {% endif %}
     <h3>Vote Number: </h3>
-    <h3><a href="/question/{{ question["id"] }}/up">↥</a>{{ question["vote_number"] }} vote(s) <a href="/question/{{ question["id"] }}/down">↧</a></h3>
+    <h3><a href="/question/{{ question["id"] }}/up">↥</a>{{ question["vote_number"] }} vote(s) <a
+            href="/question/{{ question["id"] }}/down">↧</a></h3>
     {{ question("image") if image is defined }}
     {% if answers %}
-    <h3>Answers:</h3>
-    <table class="table-bordered">
-    {% for head in header %}
-        <th class="text-center">{{ head }}</th>
-    {% endfor %}
+        <h3>Answers:</h3>
+        <table class="table-bordered">
+            {% for head in header %}
+                <th class="text-center">{{ head }}</th>
+            {% endfor %}
 
 
-        {% for a in answers %}
-        <tr>
-            <td style="width:5%" align="center">{{ a["id"] }}</td>
-            <td style="width:5%" align="center">{{ a["submission_time"] }}</td>
-            <td style="width:10%" align="center"><a href="/question/{{ question['id'] }}/answer/{{ a["id"] }}/up">↥</a>
-                {{ a["vote_number"] }} <a href="/question/{{ question['id'] }}/answer/{{ a["id"] }}/down">↧</a></td>
-            <td style="width:60%" align="center">{{ a["message"] }}</td>
-            <td style="width:20%" align="center">
-                {% if a['image'] %}
-                     <a target="_blank" href={{ a['image'] }} >Link to image</a>
-                {% endif %}
-            </td>
-            <td style="width:5%" align="center">
-                <form>
-                    <button formaction="/{{ a['question_id'] }}/answer/{{ a["id"] }}/delete"> Delete </button>
-                </form>
-            </td>
-        </tr>
-    {% endfor %}
-    </table>
+            {% for a in answers %}
+                <tr>
+                    <td style="width:5%" align="center">{{ a["id"] }}</td>
+                    <td style="width:5%" align="center">{{ a["submission_time"] }}</td>
+                    <td style="width:10%" align="center"><a
+                            href="/question/{{ question['id'] }}/answer/{{ a["id"] }}/up">↥</a>
+                        {{ a["vote_number"] }} <a href="/question/{{ question['id'] }}/answer/{{ a["id"] }}/down">↧</a>
+                    </td>
+                    <td style="width:60%" align="center">{{ a["message"] }}</td>
+                    <td style="width:20%" align="center">
+                        {% if a['image'] %}
+                            <a target="_blank" href={{ a['image'] }}>Link to image</a>
+                        {% endif %}
+                    </td>
+                    <td style="width:5%" align="center">
+                        <form>
+                            <button formaction="/{{ a['question_id'] }}/answer/{{ a["id"] }}/delete"> Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
 
     {% else %}
         <h5>There are no answer for this question yet.</h5>
     {% endif %}
 
     <h3><a href="{{ url_for("post_answer", question_id=question["id"]) }}"> Add New Answer</a><br>
-    <a href="{{ url_for("edit_question", question_id=question["id"]) }}"> Update Question</a><br>
-    <a href="/question/{{ question['id'] }}/delete"> Delete Question</a></h3>
+        <a href="{{ url_for("edit_question", question_id=question["id"]) }}"> Update Question</a><br>
+        <a href="/question/{{ question['id'] }}/delete"> Delete Question</a></h3>
     <h2><a href='/'> Go back to the homepage</a></h2></div>
 </body>
 </html>

@@ -19,9 +19,12 @@ def get_questions(cursor):
     list_of_questions = cursor.fetchall()
     return list_of_questions
 
-
-def get_answers():
-    list_of_answers = connection.read_file(ANSWER_FILE)
+@connection.connection_handler
+def get_answers(cursor):
+    cursor.execute("""
+                    SELECT * FROM answer;
+                    """)
+    list_of_answers = cursor.fetchall()
     return list_of_answers
 
 
