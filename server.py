@@ -17,11 +17,9 @@ def index():
 def add_question():
     if request.method == 'GET':
         return render_template('add-question.html')
-    if request.method == 'POST':
-        new_dict = request.form.to_dict()
-        datamanager.append_question(new_dict)
-        _id = datamanager.get_id(datamanager.QUESTION_FILE) - 1
-        return redirect(url_for('display_question', _id=_id))
+
+    _id = datamanager.append_question(request.form.to_dict())
+    return redirect(url_for('display_question', _id=_id))
 
 
 @app.route('/question/<_id>')
@@ -30,7 +28,6 @@ def display_question(_id):
     question = datamanager.get_question_by_id(_id)
     answers = datamanager.get_answers_by_id(_id)
     return render_template('display-question.html',
-                           id=_id,
                            answers = answers,
                            question=question,
                            header = datamanager.answer_header)
@@ -40,10 +37,10 @@ def display_question(_id):
 def post_answer(question_id):
     if request.method == 'GET':
         return render_template('new-answer.html', question_id = question_id)
-    elif request.method == 'POST':
-        answer = request.form.to_dict()
-        datamanager.append_answer(answer,question_id)
-        return redirect(url_for('display_question', _id=question_id))
+
+    answer = request.form.to_dict()
+    datamanager.append_answer(answer,question_id)
+    return redirect(url_for('display_question', _id=question_id))
 
 
 @app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
