@@ -3,23 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ question["title"] }}</title>
-    <style>h4, table, td {border: 1px solid black;}</style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <h1> {{ question ["title"] }}</h1>
+    <div class='container'><h1> {{ question ["title"] }}</h1>
     <h3><label>Question Message:</label></h3>
-    <h4><p>{{ question["message"] }} </p></h4>
+    <h4>{{ question["message"] }} </h4>
     {% if question['image'] %}
-    <h3><p> <a target="_blank" href={{ question['image'] }} >Link to image</a></p></h3>
+    <h3><a target="_blank" href={{ question['image'] }} >Link to image</a></></h3>
     {% endif %}
-    <h3><p>Vote Number:</p> </h3>
-    <h3><p><a href="/question/{{ question["id"] }}/up">↥</a>{{ question["vote_number"] }} vote(s) <a href="/question/{{ question["id"] }}/down">↧</a></p></h3>
+    <h3>Vote Number: </h3>
+    <h3><a href="/question/{{ question["id"] }}/up">↥</a>{{ question["vote_number"] }} vote(s) <a href="/question/{{ question["id"] }}/down">↧</a></h3>
     {{ question("image") if image is defined }}
     {% if answers %}
-    <h3><p>Answers:</p> </h3>
-    <table style="border: 1px solid ">
+    <h3>Answers:</h3>
+    <table class="table-bordered">
     {% for head in header %}
-        <th>{{ head }}</th>
+        <th class="text-center">{{ head }}</th>
     {% endfor %}
 
 
@@ -38,10 +46,12 @@
             <td style="width:5%" align="center">
                 <form>
                     <button formaction="/{{ a['question_id'] }}/answer/{{ a["id"] }}/delete"> Delete </button>
-                </form>  </td>
+                </form>
+            </td>
         </tr>
     {% endfor %}
     </table>
+
     {% else %}
         <h5>There are no answer for this question yet.</h5>
     {% endif %}
@@ -49,6 +59,6 @@
     <h3><a href="{{ url_for("post_answer", question_id=question["id"]) }}"> Add New Answer</a><br>
     <a href="{{ url_for("edit_question", question_id=question["id"]) }}"> Update Question</a><br>
     <a href="/question/{{ question['id'] }}/delete"> Delete Question</a></h3>
-    <h2><a href='/'> Go back to the homepage</a></h2>
+    <h2><a href='/'> Go back to the homepage</a></h2></div>
 </body>
 </html>

@@ -5,7 +5,7 @@ from operator import itemgetter
 
 question_header = ['id','submission_time','view_number','vote_number','title','message','image']
 list_header = ['id','submission_time','view_number','vote_number','title']
-answer_header = ['id','submission_time','vote_number','message','image']
+answer_header = ['id','submission_time','vote_number','message','image', 'delete']
 answer_header_for_file = ['id','submission_time','vote_number', 'question_id', 'message','image']
 QUESTION_FILE = "question.csv"
 ANSWER_FILE = 'answer.csv'
@@ -34,6 +34,7 @@ def append_question(dict_to_append):
     dict_to_append['vote_number'] = 0
     dict_to_append['view_number'] = 0
     connection.append_to_csvfile(QUESTION_FILE, dict_to_append, question_header)
+    return dict_to_append['id']
 
 
 def get_id(file):
@@ -122,10 +123,8 @@ def order_list_by_key(key, order):
         question['vote_number'] = int(question['vote_number'])
         question['id'] = int(question['id'])
         question['title'] = question['title'].capitalize()
-    if order == 'desc':
-        sorted_list = sorted(unordered_list, key=itemgetter(key), reverse=True)
-    elif order == 'asc':
-        sorted_list = sorted(unordered_list, key=itemgetter(key), reverse=False)
+    reverse = True if order == "desc" else False
+    sorted_list = sorted(unordered_list, key=itemgetter(key), reverse=reverse)
     connection.update_file(QUESTION_FILE, sorted_list, question_header)
 
 
