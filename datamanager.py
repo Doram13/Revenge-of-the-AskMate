@@ -98,39 +98,47 @@ def increase_view_number(cursor, _id):
                    {'_id': _id})
 
 
-def update_question(_id, edited_dict):
-    list_of_questions = get_questions()
-    for question in list_of_questions:
-        if question['id'] == _id:
-            question.update(edited_dict)
-    connection.update_file(QUESTION_FILE, list_of_questions, question_header)
+@connection.connection_handler
+def update_question(cursor, _id, edited_dict):
+    title = edited_dict['title']
+    message = edited_dict['message']
+    image = edited_dict['image']
+    cursor.execute("""
+            UPDATE question
+            SET title = %(title)s
+            WHERE id= %(_id)s;
+            
+            UPDATE question
+            SET message = %(message)s
+            WHERE id= %(_id)s;
+            
+            UPDATE question
+            SET image = %(image)s
+            WHERE id= %(_id)s;""",
+                   {'_id': _id,'title': title, 'message': message, 'image': image})
 
 
-def delete_question(_id):
-    new_data = []
-    list_of_questions = get_questions()
-    for question in list_of_questions:
-        if question['id'] != _id:
-            new_data.append(question)
-    connection.update_file(QUESTION_FILE, new_data, question_header)
+def delete_question(cursor, _id):
+    cursor.execute("""
+    DELETE FROM question
+    WHERE id = %(_id)s;""",
+                {'_id': _id})
 
 
-def delete_answers(_id):
-    new_data = []
-    list_of_answers = get_answers()
-    for answer in list_of_answers:
-        if answer['question_id'] != _id:
-            new_data.append(answer)
-    connection.update_file(ANSWER_FILE, new_data, answer_header_for_file)
+
+def delete_answers(cursor, question_id):
+    cursor.execute("""
+    DELETE FROM answer
+    WHERE question_id = %(question_id)s;""",
+                {'_id': question_id})
 
 
-def delete_one_answer(_id):
-    new_data = []
-    list_of_answers = get_answers()
-    for answer in list_of_answers:
-        if answer['id'] != _id:
-            new_data.append(answer)
-    connection.update_file(ANSWER_FILE, new_data, answer_header_for_file)
+def delete_one_answer(cursor, _id):
+    cursor.execute("""
+    DELETE FROM answer
+    WHERE id = %(_id)s;""",
+                {'_id': _id})
+
 
 
 def order_list_by_key(key, order):
