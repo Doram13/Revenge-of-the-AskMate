@@ -156,18 +156,19 @@ def order_list_by_key(cursor, col, order):
         return new_list
 
 
+@connection.connection_handler
+def change_q_vote(cursor, _id, number):
+    cursor.execute("""
+    UPDATE question
+    SET vote_number =  vote_number + %(number)s
+    WHERE id= %(question_id)s;""",
+    {'question_id': _id, 'number': number})
 
-def change_q_vote(_id, number):
-    list_of_questions = get_questions()
-    for question in list_of_questions:
-        if question['id'] == _id:
-            question['vote_number'] = int(question['vote_number']) + number
-    connection.update_file(QUESTION_FILE, list_of_questions, question_header)
 
-
-def change_a_vote(_id, number):
-    list_of_answers = get_answers()
-    for answer in list_of_answers:
-        if answer['id'] == _id:
-            answer['vote_number'] = int(answer['vote_number']) + number
-    connection.update_file(ANSWER_FILE, list_of_answers, answer_header_for_file)
+@connection.connection_handler
+def change_a_vote(cursor, _id, number):
+    cursor.execute("""
+        UPDATE answer
+        SET vote_number =  vote_number + %(number)s
+        WHERE id= %(question_id)s;""",
+    {'question_id': _id, 'number': number})
