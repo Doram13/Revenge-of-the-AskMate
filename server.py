@@ -59,7 +59,6 @@ def edit_question(question_id):
 @app.route('/question/<question_id>/delete')
 def delete_question(question_id):
     datamanager.delete_question(question_id)
-    datamanager.delete_answers(question_id)
     return redirect('/')
 
 

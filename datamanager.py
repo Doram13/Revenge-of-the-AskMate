@@ -118,18 +118,11 @@ def update_question(cursor, _id, edited_dict):
                    {'_id': _id,'title': title, 'message': message, 'image': image})
 
 
-def delete_question(cursor, _id):
+@connection.connection_handler
+def delete_question(cursor, question_id):
     cursor.execute("""
     DELETE FROM question
     WHERE id = %(_id)s;""",
-                {'_id': _id})
-
-
-
-def delete_answers(cursor, question_id):
-    cursor.execute("""
-    DELETE FROM answer
-    WHERE question_id = %(question_id)s;""",
                 {'_id': question_id})
 
 
