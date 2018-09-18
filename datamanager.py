@@ -2,6 +2,7 @@ import connection
 import time
 from datetime import datetime
 from operator import itemgetter
+from psycopg2 import sql
 
 question_header = ['id','submission_time','view_number','vote_number','title','message','image']
 list_header = ['id','submission_time','view_number','vote_number','title']
@@ -133,17 +134,27 @@ def delete_one_answer(cursor, _id):
                 {'_id': _id})
 
 
+@connection.connection_handler
+def order_list_by_key(cursor, col, order):
+    if order == "asc":
+        cursor.execute(
+                sql.SQL("""
+                    SELECT * FROM question
+                    ORDER BY {col} ASC;  """,).
+                    format(col=sql.Identifier(col))
+        )
+        new_list = cursor.fetchall()
+        return new_list
+    elif order == "desc":
+        cursor.execute(
+            sql.SQL("""
+                    SELECT * FROM question
+                    ORDER BY {col}  DESC; """, ).
+                format(col=sql.Identifier(col))
+        )
+        new_list = cursor.fetchall()
+        return new_list
 
-def order_list_by_key(key, order):
-    unordered_list = get_questions()
-    for question in unordered_list:
-        question['view_number'] = int(question['view_number'])
-        question['vote_number'] = int(question['vote_number'])
-        question['id'] = int(question['id'])
-        question['title'] = question['title'].capitalize()
-    reverse = True if order == "desc" else False
-    sorted_list = sorted(unordered_list, key=itemgetter(key), reverse=reverse)
-    connection.update_file(QUESTION_FILE, sorted_list, question_header)
 
 
 def change_q_vote(_id, number):

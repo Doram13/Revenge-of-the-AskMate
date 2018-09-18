@@ -70,8 +70,11 @@ def delete_answer(_id, question_id):
 
 @app.route('/list')
 def order_list():
-    datamanager.order_list_by_key(request.args['order_by'], request.args['order_direction'])
-    return redirect('/')
+    sorted_list = datamanager.order_list_by_key(request.args['order_by'], request.args['order_direction'])
+    return render_template('list.html',
+                           questions=sorted_list,
+                        header = datamanager.list_header)
+
 
 
 @app.route("/question/<q_id>/<direction>")
