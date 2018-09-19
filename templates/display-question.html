@@ -50,6 +50,8 @@
                         <form>
                             <button formaction="/{{ a['question_id'] }}/answer/{{ a["id"] }}/delete"> Delete</button>
                         </form>
+                        <td align="center">
+                    <form><button formaction="/edit/{{ a["question_id"] }}/{{ a["id"] }}"> Edit  </button></form>
                     </td>
                 </tr>
             {% endfor %}

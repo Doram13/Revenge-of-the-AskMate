@@ -4,7 +4,7 @@ from psycopg2 import sql
 
 question_header = ['id','submission_time','view_number','vote_number','title','message','image']
 list_header = ['id','submission_time','view_number','vote_number','title']
-answer_header = ['id','submission_time','vote_number','message','image', 'delete']
+answer_header = ['id','submission_time','vote_number','message','image', 'delete', 'edit']
 answer_header_for_file = ['id','submission_time','vote_number', 'question_id', 'message','image']
 QUESTION_FILE = "question.csv"
 ANSWER_FILE = 'answer.csv'
@@ -65,11 +65,20 @@ def append_question(cursor, message, title, image):
 def get_answers_by_id(cursor, _id):
     cursor.execute("""
     SELECT * FROM answer
-    WHERE question_id= %(_id)s;
+    WHERE question_id= %(_id)s ORDER BY id DESC;
     """, {"_id": _id})
     answers = cursor.fetchall()
     return answers
 
+
+@connection.connection_handler
+def get_answer_answer_id(cursor, _id):
+    cursor.execute("""
+    SELECT * FROM answer
+    WHERE id= %(_id)s;
+    """, {"_id": _id})
+    answer = cursor.fetchone()
+    return answer
 
 @connection.connection_handler
 def append_answer(cursor, question_id, message, image):
@@ -170,3 +179,15 @@ def search_questions(cursor, searched_term):
                     """, {'word' : '%' + searched_term + '%'})
     questions = cursor.fetchall()
     return questions
+
+
+@connection.connection_handler
+def update_answer(cursor, answer_id, edited_answer):
+    message = edited_answer['message']
+    image = edited_answer['image']
+    cursor.execute("""
+                UPDATE answer
+                SET message = %(message)s, image = %(image)s
+                WHERE id= %(_id)s;
+                        """,
+                   {'_id': answer_id, 'message': message, 'image': image})

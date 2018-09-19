@@ -58,6 +58,18 @@ def edit_question(question_id):
         return redirect(url_for('display_question', _id = question_id))
 
 
+@app.route('/edit/<question_id>/<answer_id>', methods=['GET', 'POST'])
+def edit_answer(answer_id, question_id):
+    if request.method == 'GET':
+        answer_to_edit = datamanager.get_answer_answer_id(answer_id)
+        return render_template('edit-answer.html',
+                               answer = answer_to_edit,
+                               answer_id = answer_id)
+    edited_answer = request.form.to_dict()
+    datamanager.update_answer(answer_id, edited_answer)
+    return redirect(url_for('display_question', _id = question_id))
+
+
 @app.route('/question/<question_id>/delete')
 def delete_question(question_id):
     datamanager.delete_question(question_id)
