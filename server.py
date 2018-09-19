@@ -106,6 +106,12 @@ def answer_vote(a_id, q_id, direction):
     return redirect(url_for('display_question', _id=q_id))
 
 
+@app.route('/search')
+def search_questions():
+    questions = datamanager.search_questions(request.form['search'])
+    return render_template('list.html', questions = questions, header = datamanager.list_header)
+
+
 if __name__ == "__main__":
     app.run(
       debug=True,
