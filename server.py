@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    questions = datamanager.get_questions()
+    questions = datamanager.first_5_question()
     return render_template("list.html",
                            questions = questions,
                            header = datamanager.list_header)
@@ -69,6 +69,12 @@ def delete_answer(question_id, _id):
 
 
 @app.route('/list')
+def list_all_questions():
+    questions = datamanager.get_questions()
+    return render_template("list.html",
+                           questions=questions,
+                           header=datamanager.list_header)
+
 def order_list():
     sorted_list = datamanager.order_list_by_key(request.args['order_by'], request.args['order_direction'])
     return render_template('list.html',

@@ -13,6 +13,16 @@ ANSWER_FILE = 'answer.csv'
 
 
 @connection.connection_handler
+def first_5_question(cursor):
+    cursor.execute("""
+            SELECT * FROM question
+            ORDER BY submission_time DESC LIMIT 5;
+    """)
+    five_questions = cursor.fetchall()
+    return five_questions
+
+
+@connection.connection_handler
 def get_questions(cursor):
     cursor.execute("""
                     SELECT * FROM question
