@@ -156,3 +156,15 @@ def change_a_vote(cursor, _id, number):
         SET vote_number =  vote_number + %(number)s
         WHERE id= %(question_id)s;""",
     {'question_id': _id, 'number': number})
+
+
+@connection.connection_handler
+def search_questions(cursor, searched_term):
+    cursor.execute("""
+                    SELECT * FROM question
+                    WHERE title OR message LIKE CONCAT('%' + %(word)s + '%')
+                    
+                    
+                    """, {'word' : searched_term})
+    questions = cursor.fetchall()
+    return questions
