@@ -13,13 +13,15 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style>
-        button {width: 100%}
+        button {
+            width: 100%
+        }
     </style>
 </head>
 <body>
 
 <div class="container" align="center">
-<h1>Ask Mate</h1>
+    <h1>Ask Mate</h1>
     <h2><a href='/add-question'> Add New Question</a></h2>
     <table class="table-bordered">
         <tr>
@@ -32,15 +34,15 @@
         </tr>
         {% for question in questions %}
             <tr>
-                <td  align="center">
+                <td align="center">
                     <form>
                         <button formaction="/question/{{ question["id"] }}"> {{ question["id"] }} </button>
                     </form>
                 </td>
-                <td  align="center">{{ question["submission_time"] }}</td>
-                <td  align="center">{{ question["view_number"] }} view(s)</td>
-                <td  align="center">{{ question["vote_number"] }} vote(s)</td>
-                <td  align="center">{{ question["title"] }} </td>
+                <td align="center">{{ question["submission_time"] }}</td>
+                <td align="center">{{ question["view_number"] }} view(s)</td>
+                <td align="center">{{ question["vote_number"] }} vote(s)</td>
+                <td align="center">{{ question["title"] }} </td>
             </tr>
         {% endfor %}
     </table>

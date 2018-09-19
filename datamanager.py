@@ -1,7 +1,5 @@
 import connection
-import time
 from datetime import datetime
-from operator import itemgetter
 from psycopg2 import sql
 
 question_header = ['id','submission_time','view_number','vote_number','title','message','image']
@@ -63,24 +61,6 @@ def append_question(cursor, message, title, image):
     return _id[0]['id']
 
 
-def get_id(file):
-    ids = []
-    list_of_file = connection.read_file(file)
-    for dict_of_file in list_of_file:
-        ids.append(dict_of_file['id'])
-    return len(ids)
-
-
-def get_timestamp():
-    return int(time.time())
-
-
-def convert_timestamp(convertable):
-    for i in convertable:
-        i['submission_time'] = datetime.fromtimestamp(int(i['submission_time']))
-    return convertable
-
-
 @connection.connection_handler
 def get_answers_by_id(cursor, _id):
     cursor.execute("""
@@ -116,16 +96,9 @@ def update_question(cursor, _id, edited_dict):
     image = edited_dict['image']
     cursor.execute("""
             UPDATE question
-            SET title = %(title)s
+            SET title = %(title)s, message =%(message)s, image = %(image)s
             WHERE id= %(_id)s;
-            
-            UPDATE question
-            SET message = %(message)s
-            WHERE id= %(_id)s;
-            
-            UPDATE question
-            SET image = %(image)s
-            WHERE id= %(_id)s;""",
+                    """,
                    {'_id': _id,'title': title, 'message': message, 'image': image})
 
 
