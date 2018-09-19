@@ -8,9 +8,11 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     questions = datamanager.first_5_question()
+    main_page = 1
     return render_template("list.html",
                            questions = questions,
-                           header = datamanager.list_header)
+                           header = datamanager.list_header,
+                           main_page = main_page)
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
