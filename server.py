@@ -73,9 +73,11 @@ def delete_answer(question_id, _id):
 @app.route('/list')
 def list_all_questions():
     questions = datamanager.get_questions()
+    main_page = 0
     return render_template("list.html",
                            questions=questions,
-                           header=datamanager.list_header)
+                           header=datamanager.list_header,
+                           main_page = main_page)
 
 def order_list():
     sorted_list = datamanager.order_list_by_key(request.args['order_by'], request.args['order_direction'])
