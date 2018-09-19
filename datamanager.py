@@ -161,10 +161,12 @@ def change_a_vote(cursor, _id, number):
 @connection.connection_handler
 def search_questions(cursor, searched_term):
     cursor.execute("""
-                    SELECT * FROM question
-                    WHERE title OR message LIKE CONCAT('%' + %(word)s + '%')
+                    SELECT question.* FROM question
+                    LEFT JOIN answer a on question.id = a.question_id
+                    WHERE title LIKE %(word)s 
+                    OR question.message like %(word)s
+                    OR a.message LIKE %(word)s;
                     
-                    
-                    """, {'word' : searched_term})
+                    """, {'word' : '%' + searched_term + '%'})
     questions = cursor.fetchall()
     return questions
