@@ -46,7 +46,7 @@ def append_question(cursor, message, title, image):
                     INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
                     VALUES (%(submission_time)s, 0, 0, %(title)s, %(message)s, %(image)s);
                     SELECT id FROM question
-                    ORDER BY id LIMIT 1;
+                    ORDER BY id DESC LIMIT 1;
                     """,
                    {'submission_time': datetime.now(), 'title': title, 'message': message, 'image': image})
     _id = cursor.fetchall()
@@ -127,6 +127,7 @@ def delete_question(cursor, question_id):
                 {'_id': question_id})
 
 
+@connection.connection_handler
 def delete_one_answer(cursor, _id):
     cursor.execute("""
     DELETE FROM answer
