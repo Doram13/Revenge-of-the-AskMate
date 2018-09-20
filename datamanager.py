@@ -206,6 +206,16 @@ def get_comments_by_question_id(cursor, question_id):
 
 
 @connection.connection_handler
+def get_comment_by_comment_id(cursor, _id):
+    cursor.execute("""
+    SELECT * FROM comment
+    WHERE id = _id
+    """, {'_id' : _id})
+    comment = cursor.fetchone()
+    return comment
+
+
+@connection.connection_handler
 def edit_comment_by_id(cursor, edited_comment, _id):
     message = edited_comment['message']
     cursor.execute("""
