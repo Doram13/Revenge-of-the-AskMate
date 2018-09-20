@@ -44,7 +44,7 @@
             </tr>
         {% endfor %}
         {% endif %}
-            <tr align="center"><td colspan="4"><a href="/">Add new comment</a></td></tr>
+            <tr align="center"><td colspan="4"><a href="{{ url_for("add_comment_to_question", question_id = question['id']) }}">Add new comment</a></td></tr>
         </table>
 
 

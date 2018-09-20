@@ -219,7 +219,7 @@ def edit_comment_by_id(cursor, edited_comment, _id):
 @connection.connection_handler
 def add_comment_to_question(cursor, question_id, message):
     cursor.execute("""
-                    INSERT INTO comment (question_id, message, submission_time, edited_number)
+                    INSERT INTO comment (question_id, message, submission_time, edited_count)
                     VALUES (%(question_id)s, %(message)s, %(time)s, 0)
  """,
                    {'question_id': question_id, 'message' : message, 'time' : datetime.now()})

@@ -15,10 +15,10 @@
 </head>
 <body>
 <div class="form-group" style="padding: 10px">
-    <form method="POST" action="{{ url_for("comment_question", q_id=question_id) }}">
-        <label for="message"> Answer:</label><br>
+    <form method="POST" action="{{ url_for("add_comment_to_question", question_id=question_id) }}">
+        <label for="message"> Comment:</label><br>
         <textarea id="message" name="message" rows="8" cols="80" required></textarea><br>
-        <button type="submit">Add New Answer</button>
+        <button type="submit">Add New Comment</button>
     </form>
     <br></div>
 <h2><a href='/'> Go back to the homepage</a></h2>
