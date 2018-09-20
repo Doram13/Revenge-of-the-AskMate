@@ -2,12 +2,13 @@ import connection
 from datetime import datetime
 from psycopg2 import sql
 
-question_header = ['id','submission_time','view_number','vote_number','title','message','image']
+question_header = ['id','submission time','view number','vote number','title','message','image']
 list_header = ['id','submission_time','view_number','vote_number','title']
-answer_header = ['id','submission_time','vote_number','message','image', 'delete', 'edit']
+answer_header = ['id','submission time','vote number','message','image', 'delete', 'edit']
 answer_header_for_file = ['id','submission_time','vote_number', 'question_id', 'message','image']
 QUESTION_FILE = "question.csv"
 ANSWER_FILE = 'answer.csv'
+comment_header = ['id', "message", "submission time", 'edited number']
 
 
 @connection.connection_handler
@@ -191,3 +192,25 @@ def update_answer(cursor, answer_id, edited_answer):
                 WHERE id= %(_id)s;
                         """,
                    {'_id': answer_id, 'message': message, 'image': image})
+
+
+@connection.connection_handler
+def get_comments_by_question_id(cursor, question_id):
+    cursor.execute("""
+                    SELECT * FROM comment
+                    WHERE question_id = %(question_id)s
+                    ORDER BY id;
+ """,{'question_id' : question_id})
+    list_of_comments = cursor.fetchall()
+    return list_of_comments
+
+
+@connection.connection_handler
+def edit_comment_by_id(cursor, question_id):
+    cursor.execute("""
+                    SELECT * FROM comment
+                    WHERE question_id = %(question_id)s
+                    ORDER BY id;
+ """,{'question_id' : question_id})
+    list_of_comments = cursor.fetchall()
+    return list_of_comments
