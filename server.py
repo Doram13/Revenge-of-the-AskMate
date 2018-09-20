@@ -137,13 +137,19 @@ def add_comment_to_question(question_id):
     return redirect(url_for('display_question', _id=question_id))
 
 
-@app.route('/edit/<question_id>/<_id>', methods=['GET', 'POST'])
+@app.route('/edit/<question_id>/comment/<_id>', methods=['GET', 'POST'])
 def edit_comment(question_id, _id):
     if request.method == 'GET':
         return render_template('edit-comment.html', )
     edited_comment = request.form.to_dict()
     datamanager.edit_comment_by_id(edited_comment, _id)
     return redirect(url_for('display_question', _id = question_id))
+
+
+@app.route('/<question_id>/comment/<_id>/delete')
+def delete_comment(question_id, _id):
+    datamanager.delete_one_comment(_id)
+    return redirect(url_for('display_question', _id=question_id))
 
 
 if __name__ == "__main__":
