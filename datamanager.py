@@ -8,7 +8,7 @@ answer_header = ['id','submission time','vote number','message','image', 'delete
 answer_header_for_file = ['id','submission_time','vote_number', 'question_id', 'message','image']
 QUESTION_FILE = "question.csv"
 ANSWER_FILE = 'answer.csv'
-comment_header = ['id', "message", "submission time", 'edited number']
+comment_header = ['id', "message", "submission time", 'edited number', 'delete', 'edit']
 
 
 @connection.connection_handler

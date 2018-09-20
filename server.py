@@ -137,6 +137,15 @@ def add_comment_to_question(question_id):
     return redirect(url_for('display_question', _id=question_id))
 
 
+@app.route('/edit/<question_id>/<_id>', methods=['GET', 'POST'])
+def edit_comment(question_id, _id):
+    if request.method == 'GET':
+        return render_template('edit-comment.html', )
+    edited_comment = request.form.to_dict()
+    datamanager.edit_comment_by_id(edited_comment, _id)
+    return redirect(url_for('display_question', _id = question_id))
+
+
 if __name__ == "__main__":
     app.run(
       debug=True,
