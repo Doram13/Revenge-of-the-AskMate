@@ -40,11 +40,11 @@
                 <td align="center" style="width:5%">{{comment['id']}}</td>
                 <td align="center" style="width:20%">{{comment['message']}}</td>
                 <td align="center" style="width:10%">{{comment['submission_time']}}</td>
-                <td align="center" style="width:5%">{{comment['edit_count']}}</td>
+                <td align="center" style="width:5%">{{comment['edited_count']}}</td>
             </tr>
         {% endfor %}
         {% endif %}
-            <tr align="center"><td colspan="4"><a href="{{ url_for("add_comment_to_question", question_id = question['id']) }}">Add new comment</a></td></tr>
+            <tr><td align="center" colspan="4"><a href="{{ url_for("add_comment_to_question", question_id = question['id']) }}">Add new comment</a></td></tr>
         </table>
 
 
