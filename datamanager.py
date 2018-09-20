@@ -206,11 +206,22 @@ def get_comments_by_question_id(cursor, question_id):
 
 
 @connection.connection_handler
-def edit_comment_by_id(cursor, question_id):
+def edit_comment_by_id(cursor, edited_comment, _id):
+    message = edited_comment['message']
     cursor.execute("""
-                    SELECT * FROM comment
-                    WHERE question_id = %(question_id)s
-                    ORDER BY id;
- """,{'question_id' : question_id})
-    list_of_comments = cursor.fetchall()
-    return list_of_comments
+                    UPDATE comment
+                    SET message = %(message)s
+                    WHERE id = %(_id)s;
+                            """,
+                   {'_id': _id, 'message': message})
+
+
+@connection.connection_handler
+def add_comment_to_question(cursor, question_id, message):
+    cursor.execute("""
+                    INSERT INTO comment (question_id, message, submission_time, edited_number)
+                    VALUES (%(question_id)s, %(message)s, %(time)s, 0)
+ """,
+                   {'question_id': question_id, 'message' : message, 'time' : datetime.now()})
+
+

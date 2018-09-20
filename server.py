@@ -128,6 +128,13 @@ def search_questions():
     return render_template('list.html', questions = questions, header = datamanager.list_header)
 
 
+@app.route("/question/<question_id>/add-comment", methods=['GET', 'POST'])
+def add_comment_to_question(question_id):
+    if request.method == 'GET':
+        return render_template('add-comment.html', question_id=question_id, )
+    message = request.form['message']
+    datamanager.add_comment_to_question(question_id, message)
+    return redirect(url_for('display_question', _id=question_id))
 
 
 if __name__ == "__main__":
