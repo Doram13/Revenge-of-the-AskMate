@@ -125,7 +125,9 @@ def answer_vote(a_id, q_id, direction):
 @app.route('/search', methods = ['GET', 'POST'])
 def search_questions():
     questions = datamanager.search_questions(request.form['search'])
-    return render_template('list.html', questions = questions, header = datamanager.list_header)
+    return render_template('list.html', questions = questions,
+                                        header = datamanager.list_header,
+                                        main_page= 0)
 
 
 @app.route("/question/<question_id>/add-comment", methods=['GET', 'POST'])

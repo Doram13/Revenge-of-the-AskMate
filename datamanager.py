@@ -1,13 +1,10 @@
 import connection
+import utils
 from datetime import datetime
 from psycopg2 import sql
 
-question_header = ['id','submission time','view number','vote number','title','message','image']
 list_header = ['id','submission_time','view_number','vote_number','title']
 answer_header = ['id','submission time','vote number','message','image', 'delete', 'edit']
-answer_header_for_file = ['id','submission_time','vote_number', 'question_id', 'message','image']
-QUESTION_FILE = "question.csv"
-ANSWER_FILE = 'answer.csv'
 comment_header = ['id', "message", "submission time", 'edited number', 'delete', 'edit']
 
 
@@ -18,7 +15,7 @@ def first_5_question(cursor):
             ORDER BY submission_time DESC LIMIT 5;
     """)
     five_questions = cursor.fetchall()
-    return five_questions
+    return utils.get_readable_date(five_questions)
 
 
 @connection.connection_handler
@@ -28,7 +25,7 @@ def get_questions(cursor):
                     ORDER BY id;
  """)
     list_of_questions = cursor.fetchall()
-    return list_of_questions
+    return utils.get_readable_date(list_of_questions)
 
 @connection.connection_handler
 def get_answers(cursor):
@@ -36,7 +33,7 @@ def get_answers(cursor):
                     SELECT * FROM answer;
                     """)
     list_of_answers = cursor.fetchall()
-    return list_of_answers
+    return utils.get_readable_date(list_of_answers)
 
 
 @connection.connection_handler
@@ -69,7 +66,7 @@ def get_answers_by_id(cursor, _id):
     WHERE question_id= %(_id)s ORDER BY id DESC;
     """, {"_id": _id})
     answers = cursor.fetchall()
-    return answers
+    return utils.get_readable_date(answers)
 
 
 @connection.connection_handler
@@ -179,7 +176,7 @@ def search_questions(cursor, searched_term):
                     
                     """, {'word' : '%' + searched_term + '%'})
     questions = cursor.fetchall()
-    return questions
+    return utils.get_readable_date(questions)
 
 
 @connection.connection_handler
@@ -202,7 +199,7 @@ def get_comments_by_question_id(cursor, question_id):
                     ORDER BY id;
  """,{'question_id' : question_id})
     list_of_comments = cursor.fetchall()
-    return list_of_comments
+    return utils.get_readable_date(list_of_comments)
 
 
 @connection.connection_handler
