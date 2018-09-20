@@ -208,8 +208,8 @@ def get_comments_by_question_id(cursor, question_id):
 @connection.connection_handler
 def get_comment_by_comment_id(cursor, _id):
     cursor.execute("""
-    SELECT * FROM comment
-    WHERE id = _id
+    SELECT id, message FROM comment
+    WHERE id = %(_id)s
     """, {'_id' : _id})
     comment = cursor.fetchone()
     return comment
@@ -220,7 +220,7 @@ def edit_comment_by_id(cursor, edited_comment, _id):
     message = edited_comment['message']
     cursor.execute("""
                     UPDATE comment
-                    SET message = %(message)s
+                    SET message = %(message)s, edited_count = edited_count + 1
                     WHERE id = %(_id)s;
                             """,
                    {'_id': _id, 'message': message})
