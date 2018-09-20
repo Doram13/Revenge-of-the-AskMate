@@ -28,8 +28,8 @@
             href="/question/{{ question["id"] }}/down">↧</a></h5>
     {{ question("image") if image is defined }}
 
-<h3>Comments:</h3>
-        <table class="table-bordered" >
+
+        <table class="table-striped">
         {% if comments %}
         {% for title in comment_header %}
             <th class="text-center">{{ title }}</th>
@@ -59,7 +59,7 @@
 
     {% if answers %}
         <h3>Answers:</h3>
-        <table class="table-bordered" bgcolor="#f5f5dc">
+        <table class="table-condensed">
 
             {% for head in header %}
                 <th class="text-center">{{ head }}</th>
