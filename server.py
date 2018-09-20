@@ -30,10 +30,14 @@ def display_question(_id):
     datamanager.increase_view_number(_id)
     question = datamanager.get_question_by_id(_id)
     answers = datamanager.get_answers_by_id(_id)
+
     return render_template('display-question.html',
                            answers=answers,
                            question=question,
-                           header=datamanager.answer_header)
+                           header=datamanager.answer_header,
+                           comment_header = datamanager.comment_header,
+                           comments = datamanager.get_comments_by_question_id(_id)
+                           )
 
 
 @app.route('/question/<question_id>/new-answer',  methods=['GET', 'POST'])
@@ -122,6 +126,8 @@ def answer_vote(a_id, q_id, direction):
 def search_questions():
     questions = datamanager.search_questions(request.form['search'])
     return render_template('list.html', questions = questions, header = datamanager.list_header)
+
+
 
 
 if __name__ == "__main__":
