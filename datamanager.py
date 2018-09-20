@@ -235,3 +235,10 @@ def add_comment_to_question(cursor, question_id, message):
                    {'question_id': question_id, 'message' : message, 'time' : datetime.now()})
 
 
+@connection.connection_handler
+def delete_one_comment(cursor, _id):
+    cursor.execute("""
+    DELETE FROM comment
+    WHERE id = %(_id)s;""",
+                {'_id': _id})
+
