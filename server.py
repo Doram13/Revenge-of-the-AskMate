@@ -95,11 +95,17 @@ def list_all_questions():
                            header=datamanager.list_header,
                            main_page = main_page)
 
+
+@app.route('/ordered-list')
 def order_list():
+    main_page = 0
     sorted_list = datamanager.order_list_by_key(request.args['order_by'], request.args['order_direction'])
     return render_template('list.html',
-                           questions=sorted_list,
-                        header = datamanager.list_header)
+                            questions=sorted_list,
+                            header = datamanager.list_header,
+                            main_page=main_page)
+
+
 
 
 @app.route("/question/<q_id>/<direction>")

@@ -32,9 +32,9 @@
     <table class="table table-striped" style="background-color:lightgrey ">
         <tr>
             {% for item in header %}
-                <th class="text-center"><a href="/list?order_by={{ item }}&order_direction=desc">↧</a>
+                <th class="text-center"><a href="/ordered-list?order_by={{ item }}&order_direction=desc">↧</a>
                     {{ item }}
-                    <a href="/list?order_by={{ item }}&order_direction=asc">↥</a>
+                    <a href="/ordered-list?order_by={{ item }}&order_direction=asc">↥</a>
                 </th>
             {% endfor %}
         </tr>
