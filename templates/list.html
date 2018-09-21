@@ -32,14 +32,25 @@
 <div class="container" align="center">
     <h2><a href='/add-question'> Add New Question</a></h2>
     <table class="table table-striped" style="background-color:lightgrey ">
-        <tr>
+        {% if main_page == 0 %}
+            <tr>
+                {% for item in header %}
+                    <th class="text-center"><a href="/ordered-list?order_by={{ item }}&order_direction=desc">↧</a>
+                        {{ item }}
+                        <a href="/ordered-list?order_by={{ item }}&order_direction=asc">↥</a>
+                    </th>
+                {% endfor %}
+            </tr>
+        {% else %}
+            <tr>
             {% for item in header %}
-                <th class="text-center"><a href="/ordered-list?order_by={{ item }}&order_direction=desc">↧</a>
-                    {{ item }}
-                    <a href="/ordered-list?order_by={{ item }}&order_direction=asc">↥</a>
+                <th class="text-center">
+                    {{item}}
                 </th>
             {% endfor %}
         </tr>
+        {% endif %}
+
         {% for question in questions %}
             <tr>
                 <td align="center">

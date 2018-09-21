@@ -3,19 +3,13 @@ import utils
 from datetime import datetime
 from psycopg2 import sql
 
-list_header = ['id', 'submission_time', 'view_number', 'vote_number', 'title']
+list_header = ['id', 'submission time', 'view number', 'vote number', 'title']
 answer_header = ['id', 'submission time', 'vote number', 'message', 'image', 'delete', 'edit']
 comment_header = ["message", "submission time", 'edited number', 'delete', 'edit']
 
 
-@connection.connection_handler
-def first_5_question(cursor):
-    cursor.execute("""
-            SELECT * FROM question
-            ORDER BY submission_time DESC LIMIT 5;
-    """)
-    five_questions = cursor.fetchall()
-    return utils.get_readable_date(five_questions)
+def get_first_five_question():
+    return utils.get_first_five_dictionary(get_questions())
 
 
 @connection.connection_handler
