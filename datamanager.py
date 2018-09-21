@@ -3,8 +3,8 @@ import utils
 from datetime import datetime
 from psycopg2 import sql
 
-list_header = ['id','submission_time','view_number','vote_number','title']
-answer_header = ['id','submission time','vote number','message','image', 'delete', 'edit']
+list_header = ['id', 'submission_time', 'view_number', 'vote_number', 'title']
+answer_header = ['id', 'submission time', 'vote number', 'message', 'image', 'delete', 'edit']
 comment_header = ["message", "submission time", 'edited number', 'delete', 'edit']
 
 
@@ -26,6 +26,7 @@ def get_questions(cursor):
  """)
     list_of_questions = cursor.fetchall()
     return utils.get_readable_date(list_of_questions)
+
 
 @connection.connection_handler
 def get_answers(cursor):
@@ -78,6 +79,7 @@ def get_answer_answer_id(cursor, _id):
     answer = cursor.fetchone()
     return answer
 
+
 @connection.connection_handler
 def append_answer(cursor, question_id, message, image):
     cursor.execute("""
@@ -85,6 +87,7 @@ def append_answer(cursor, question_id, message, image):
                     VALUES (%(time)s, 0, %(question_id)s, %(message)s, %(image)s)
                     """,
                    {'time': datetime.now(), 'question_id': question_id, 'message': message, 'image': image})
+
 
 @connection.connection_handler
 def increase_view_number(cursor, _id):
@@ -106,7 +109,7 @@ def update_question(cursor, _id, edited_dict):
             SET title = %(title)s, message =%(message)s, image = %(image)s
             WHERE id= %(_id)s;
                     """,
-                   {'_id': _id,'title': title, 'message': message, 'image': image})
+                   {'_id': _id, 'title': title, 'message': message, 'image': image})
 
 
 @connection.connection_handler
@@ -114,7 +117,7 @@ def delete_question(cursor, question_id):
     cursor.execute("""
     DELETE FROM question
     WHERE id = %(_id)s;""",
-                {'_id': question_id})
+                   {'_id': question_id})
 
 
 @connection.connection_handler
@@ -122,17 +125,17 @@ def delete_one_answer(cursor, _id):
     cursor.execute("""
     DELETE FROM answer
     WHERE id = %(_id)s;""",
-                {'_id': _id})
+                   {'_id': _id})
 
 
 @connection.connection_handler
 def order_list_by_key(cursor, col, order):
     if order == "asc":
         cursor.execute(
-                sql.SQL("""
+            sql.SQL("""
                     SELECT * FROM question
-                    ORDER BY {col} ASC;  """,).
-                    format(col=sql.Identifier(col))
+                    ORDER BY {col} ASC;  """, ).
+                format(col=sql.Identifier(col))
         )
         new_list = cursor.fetchall()
         return new_list
@@ -153,7 +156,7 @@ def change_q_vote(cursor, _id, number):
     UPDATE question
     SET vote_number =  vote_number + %(number)s
     WHERE id= %(question_id)s;""",
-    {'question_id': _id, 'number': number})
+                   {'question_id': _id, 'number': number})
 
 
 @connection.connection_handler
@@ -162,7 +165,7 @@ def change_a_vote(cursor, _id, number):
         UPDATE answer
         SET vote_number =  vote_number + %(number)s
         WHERE id= %(question_id)s;""",
-    {'question_id': _id, 'number': number})
+                   {'question_id': _id, 'number': number})
 
 
 @connection.connection_handler
@@ -174,7 +177,7 @@ def search_questions(cursor, searched_term):
                     OR question.message like %(word)s
                     OR a.message LIKE %(word)s;
                     
-                    """, {'word' : '%' + searched_term + '%'})
+                    """, {'word': '%' + searched_term + '%'})
     questions = cursor.fetchall()
     return utils.get_readable_date(questions)
 
@@ -197,7 +200,7 @@ def get_comments_by_question_id(cursor, question_id):
                     SELECT * FROM comment
                     WHERE question_id = %(question_id)s
                     ORDER BY id;
- """,{'question_id' : question_id})
+ """, {'question_id': question_id})
     list_of_comments = cursor.fetchall()
     return utils.get_readable_date(list_of_comments)
 
@@ -207,7 +210,7 @@ def get_comment_by_comment_id(cursor, _id):
     cursor.execute("""
     SELECT id, message FROM comment
     WHERE id = %(_id)s
-    """, {'_id' : _id})
+    """, {'_id': _id})
     comment = cursor.fetchone()
     return comment
 
@@ -229,7 +232,7 @@ def add_comment_to_question(cursor, question_id, message):
                     INSERT INTO comment (question_id, message, submission_time, edited_count)
                     VALUES (%(question_id)s, %(message)s, %(time)s, 0)
  """,
-                   {'question_id': question_id, 'message' : message, 'time' : datetime.now()})
+                   {'question_id': question_id, 'message': message, 'time': datetime.now()})
 
 
 @connection.connection_handler
@@ -237,5 +240,4 @@ def delete_one_comment(cursor, _id):
     cursor.execute("""
     DELETE FROM comment
     WHERE id = %(_id)s;""",
-                {'_id': _id})
-
+                   {'_id': _id})
