@@ -17,19 +17,21 @@
 <div class='container'>
     <h1> {{ question ["title"] }}</h1>
     <h3>Question Message:</h3>
-    <h4>{{ question["message"] }} </h4>
+<br>
+    <h4 style="background-color: lightyellow">{{ question["message"] }} </h4>
 
     {% if question['image'] %}
         <h3><a target="_blank" href={{ question['image'] }}>Link to image</a></h3>
     {% endif %}
-
+<br>
+<br>
     <h5>Vote Number: </h5>
     <h5><a href="/question/{{ question["id"] }}/up">↥</a>{{ question["vote_number"] }} vote(s) <a
             href="/question/{{ question["id"] }}/down">↧</a></h5>
     {{ question("image") if image is defined }}
 
 
-        <table class="table-striped">
+        <table class="table-striped" style="background-color: cornsilk">
         {% if comments %}
         {% for title in comment_header %}
             <th class="text-center">{{ title }}</th>
@@ -59,7 +61,7 @@
 
     {% if answers %}
         <h3>Answers:</h3>
-        <table class="table-condensed">
+        <table class="table-striped" style="background-color: wheat">
 
             {% for head in header %}
                 <th class="text-center">{{ head }}</th>
