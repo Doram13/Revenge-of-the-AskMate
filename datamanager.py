@@ -5,7 +5,7 @@ from psycopg2 import sql
 
 list_header = ['id','submission_time','view_number','vote_number','title']
 answer_header = ['id','submission time','vote number','message','image', 'delete', 'edit']
-comment_header = ['id', "message", "submission time", 'edited number', 'delete', 'edit']
+comment_header = ["message", "submission time", 'edited number', 'delete', 'edit']
 
 
 @connection.connection_handler

@@ -29,7 +29,7 @@
     {{ question("image") if image is defined }}
 
 
-        <table class="table-striped">
+        <table class="table-condensed">
         {% if comments %}
         {% for title in comment_header %}
             <th class="text-center">{{ title }}</th>
@@ -37,11 +37,10 @@
 
         {% for comment in comments %}
             <tr>
-                <td align="center" style="width:5%">{{comment['id']}}</td>
-                <td align="center" style="width:20%">{{comment['message']}}</td>
-                <td align="center" style="width:10%">{{comment['submission_time']}}</td>
-                <td align="center" style="width:5%">{{comment['edited_count']}}</td>
-                <td style="width:5%" align="center">
+                <td align="center" style="width: max-content">{{comment['message']}}</td>
+                <td align="center" >{{comment['submission_time']}}</td>
+                <td align="center" >{{comment['edited_count']}}</td>
+                <td align="center">
                 <form>
                     <button formaction="/{{ comment['question_id'] }}/comment/{{ comment["id"] }}/delete"> Delete</button>
                 </form>
@@ -59,7 +58,7 @@
 
     {% if answers %}
         <h3>Answers:</h3>
-        <table class="table-condensed">
+        <table class="table-striped">
 
             {% for head in header %}
                 <th class="text-center">{{ head }}</th>
