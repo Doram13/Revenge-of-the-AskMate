@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
+<a href="{{ url_for("registration") }}">Register new user</a>
+<a href="{{ url_for("login") }}">Login</a>
 {% block content %}{% endblock %}
 {% block footer %}{% endblock %}
 </body>
