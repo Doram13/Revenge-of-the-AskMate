@@ -244,7 +244,7 @@ def delete_one_comment(cursor, _id):
 
 
 @connection.connection_handler
-def reg_to_db(cursor, new_user_name, hashed):
+def create_user(cursor, new_user_name, hashed):
     cursor.execute("""
     INSERT INTO user (user_name, hash) 
             VALUES (%(new_user_name)s,%(hashed)s)
@@ -253,7 +253,7 @@ def reg_to_db(cursor, new_user_name, hashed):
 
 
 @connection.connection_handler
-def authentication(cursor, user_name):
+def get_hash(cursor, user_name):
     cursor.execute("""
     SELECT hash FROM user
     WHERE user_name = %(user_name)s

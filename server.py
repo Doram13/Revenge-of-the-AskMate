@@ -163,10 +163,10 @@ def delete_comment(question_id, _id):
 @app.route('/registration', methods=['GET', 'POST'])
 def registration():
     if request.method == 'GET':
-        return render_template(url_for('registration.html'))
+        return render_template(('registration.html'))
     new_user_name = request.form('user_name')
     hashed = utils.hash_password(request.form('password'))
-    datamanager.reg_to_db(new_user_name, hashed)
+    datamanager.create_user(new_user_name, hashed)
     return redirect('/')
 
 
@@ -176,7 +176,7 @@ def login():
         return render_template('login.html')
     user_name_to_check = request.form('user_name')
     password_to_check = request.form('password')
-    hash_to_check = datamanager.authentication(user_name_to_check)
+    hash_to_check = datamanager.get_hash(user_name_to_check)
     is_verified = utils.verify_password(password_to_check, hash_to_check)
     if is_verified == True:
         session['user_id'] = datamanager.get_user_id(user_name_to_check)
