@@ -1,0 +1,5 @@
+{% extends 'layout.html' %}
+{% block user %}
+<a href="{{ url_for("registration") }}">Register new user</a>
+<a href="{{ url_for("login") }}">Login</a>
+{% endblock %}
