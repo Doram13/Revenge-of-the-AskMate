@@ -241,3 +241,11 @@ def delete_one_comment(cursor, _id):
     DELETE FROM comment
     WHERE id = %(_id)s;""",
                    {'_id': _id})
+
+
+@connection.connection_handler
+def reg_to_db(cursor, new_user_name, hashed):
+    cursor.execute("""
+    
+    
+    """)
