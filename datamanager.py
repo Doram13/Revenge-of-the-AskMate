@@ -264,7 +264,7 @@ def get_hash(cursor, user_name):
 
 @connection.connection_handler
 def get_user_id(cursor, user_name):
-    cursor.execut("""
+    cursor.execute("""
     SELECT user_id FROM "user"
     WHERE user_name = %(user_name)s
     """, {'user_name': user_name})

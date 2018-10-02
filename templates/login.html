@@ -9,7 +9,9 @@
             <input type="text" id="password" name="password">
             <button type="submit">Login</button>
         </form>
-
+        {% if error_message is defined %}
+            <h3> {{ error_message }}</h3>
+        {% endif %}
 
     </div>
 

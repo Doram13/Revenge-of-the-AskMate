@@ -177,12 +177,19 @@ def login():
     user_name_to_check = request.form['user_name']
     password_to_check = request.form['password']
     hash_to_check = datamanager.get_hash(user_name_to_check)
-    is_verified = utils.verify_password(password_to_check, hash_to_check)
+    is_verified = utils.verify_password(password_to_check, hash_to_check['hash'])
     if is_verified == True:
         session['user_id'] = datamanager.get_user_id(user_name_to_check)
-        return render_template('list.html', logged_user=session['user_id'])
+        questions = datamanager.get_questions()
+        main_page = 0
+        return render_template("list.html",
+                               questions=questions,
+                               header=datamanager.list_header,
+                               main_page=main_page,
+                               logged_user=session['user_id'])
     else:
-        return redirect('/login')
+        error_message = "Wrong password or User Name"
+        return render_template('login.html', error_message=error_message)
 
 
 if __name__ == "__main__":
