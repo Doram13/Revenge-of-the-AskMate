@@ -1,31 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Ask Mate</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+{% extends 'layout.html' %}
 
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <style>
-        table button {
-            width: 100%
-        }
-    </style>
-</head>
+{% block content %}
 <body>
 
 <div class="container" align="center">
     <h1>Ask Mate</h1>
-    <div class="row">
-        <div class="col-sm-6 bg-danger">x</div>
-        <div class="col-sm-6 bg-primary">x</div>
-    </div>
 </div>
 <div class="container" align="right">
     <form method="POST" action="{{ url_for("search_questions") }}">
@@ -47,9 +26,9 @@
         {% for question in questions %}
             <tr>
                 <td align="center">
-                    <form>
-                        <button formaction="/question/{{ question["id"] }}"> {{ question["id"] }} </button>
-                    </form> {# TODO: Make this a link (instead of form-button) #}
+
+                        <a href="/question/{{ question["id"] }}"> {{ question["id"] }} </a>
+
                 </td>
                 <td align="center">{{ question["submission_time"] }}</td>
                 <td align="center">{{ question["view_number"] }} view(s)</td>
@@ -66,4 +45,4 @@
 </div>
 
 </body>
-</html>
+{% endblock %}
