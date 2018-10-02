@@ -2,13 +2,14 @@
 
 {% block content %}
 
-<div class="container">
-    <form method="POST" action="{{ url_for("registration") }}">
-        <label for="user_name">User Name:</label>
-        <input type="text" id="user_name" name="user_name">
-        <label for="password">Password</label>
-        <input type="text" id="password" name="password">
-    </form>
-</div>
+    <div class="container">
+        <form method="POST" action="{{ url_for("registration") }}">
+            <label for="user_name">User Name:</label>
+            <input type="text" id="user_name" name="user_name">
+            <label for="password">Password</label>
+            <input type="text" id="password" name="password">
+            <button type="submit"> Submit</button>
+        </form>
+    </div>
 
 {% endblock %}

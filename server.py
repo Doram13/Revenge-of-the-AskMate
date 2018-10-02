@@ -164,8 +164,8 @@ def delete_comment(question_id, _id):
 def registration():
     if request.method == 'GET':
         return render_template(('registration.html'))
-    new_user_name = request.form('user_name')
-    hashed = utils.hash_password(request.form('password'))
+    new_user_name = request.form['user_name']
+    hashed = utils.hash_password(request.form['password'])
     datamanager.create_user(new_user_name, hashed)
     return redirect('/')
 
@@ -174,8 +174,8 @@ def registration():
 def login():
     if request.method == 'GET':
         return render_template('login.html')
-    user_name_to_check = request.form('user_name')
-    password_to_check = request.form('password')
+    user_name_to_check = request.form['user_name']
+    password_to_check = request.form['password']
     hash_to_check = datamanager.get_hash(user_name_to_check)
     is_verified = utils.verify_password(password_to_check, hash_to_check)
     if is_verified == True:
