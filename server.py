@@ -167,7 +167,7 @@ def registration():
     new_user_name = request.form['user_name']
     hashed = utils.hash_password(request.form['password'])
     datamanager.create_user(new_user_name, hashed)
-    return redirect('/')
+    return redirect('/')  # TODO: time of registration
 
 
 @app.route('/login', methods=['GET', 'POST'])
