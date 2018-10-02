@@ -1,10 +1,9 @@
 from flask import Flask, render_template, redirect, request, url_for, session
 import datamanager
-
+import utils
 
 app = Flask(__name__)
 
-#Brancing testing
 
 @app.route('/')
 def index():
@@ -107,8 +106,6 @@ def order_list():
                             main_page=main_page)
 
 
-
-
 @app.route("/question/<q_id>/<direction>")
 def question_vote(q_id, direction):
     if direction == 'up':
@@ -163,8 +160,21 @@ def delete_comment(question_id, _id):
     return redirect(url_for('display_question', _id=question_id))
 
 
+@app.route('/registration', methods=['GET','POST'])
+def registration():
+    if request.method == 'GET':
+        return render_template(url_for(registration))
+    new_user_name = request.form('user_name')
+    hashed = utils.hash_password(request.form('password'))
+    datamanager.reg_to_db(new_user_name, hashed)
+
+
+
+
+
+
 if __name__ == "__main__":
-    app.secret_key = 'asdfghjklé'
+    app.secret_key = 'very_secret_secret_key'
     app.run(
       debug=True,
       port=5000
