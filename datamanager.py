@@ -246,6 +246,27 @@ def delete_one_comment(cursor, _id):
 @connection.connection_handler
 def reg_to_db(cursor, new_user_name, hashed):
     cursor.execute("""
-    
-    
-    """)
+    INSERT INTO user (user_name, hash) 
+            VALUES (%(new_user_name)s,%(hashed)s)
+                    """,
+                   {'new_user_name': new_user_name, 'hashed': hashed})
+
+
+@connection.connection_handler
+def authentication(cursor, user_name):
+    cursor.execute("""
+    SELECT hash FROM user
+    WHERE user_name = %(user_name)s
+    """, {'user_name': user_name})
+    hash_of_user = cursor.fetchone()
+    return hash_of_user
+
+
+@connection.connection_handler
+def get_user_id(cursor, user_name):
+    cursor.execut("""
+    SELECT user_id FROM user
+    WHERE user_name = %(user_name)s
+    """, {'user_name': user_name})
+    user_id = cursor.fetchone()
+    return user_id
