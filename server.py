@@ -10,10 +10,10 @@ def index():
     questions = datamanager.first_5_question()
     main_page = 1
     return render_template("list.html",
-                           questions = questions,
-                           header = datamanager.list_header,
-                           main_page = main_page
-                           )
+                           questions=questions,
+                           header=datamanager.list_header,
+                           main_page=main_page,
+                           logged_user=session['user_id'])
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
@@ -23,7 +23,7 @@ def add_question():
     _id = datamanager.append_question(request.form['message'],
                                       request.form['title'],
                                       request.form['image'])
-    return redirect(url_for('display_question', _id=_id))
+    return redirect(url_for('display_question', _id=_id, logged_user=session['user_id']))
 
 
 @app.route('/question/<_id>')
@@ -37,18 +37,18 @@ def display_question(_id):
                            question=question,
                            header=datamanager.answer_header,
                            comment_header = datamanager.comment_header,
-                           comments = datamanager.get_comments_by_question_id(_id),
-                           logged_user='baba'
+                           comments=datamanager.get_comments_by_question_id(_id),
+                           logged_user=session['user_id']
                            )
 
 
 @app.route('/question/<question_id>/new-answer',  methods=['GET', 'POST'])
 def post_answer(question_id):
     if request.method == 'GET':
-        return render_template('new-answer.html', question_id=question_id)
+        return render_template('new-answer.html', question_id=question_id, logged_user=session['user_id'])
 
     datamanager.append_answer(question_id, request.form['message'], request.form['image'])
-    return redirect(url_for('display_question', _id=question_id))
+    return redirect(url_for('display_question', _id=question_id, logged_user=session['user_id']))
 
 
 @app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
@@ -57,11 +57,12 @@ def edit_question(question_id):
         question_to_edit = datamanager.get_question_by_id(question_id)
         return render_template('edit-question.html',
                                question = question_to_edit,
-                               question_id = question_id)
+                               question_id=question_id,
+                               logged_user=session['user_id'])
     elif request.method == 'POST':
         edited_question = request.form.to_dict()
         datamanager.update_question(question_id, edited_question)
-        return redirect(url_for('display_question', _id = question_id))
+        return redirect(url_for('display_question', _id=question_id, logged_user=session['user_id']))
 
 
 @app.route('/edit/<question_id>/<answer_id>', methods=['GET', 'POST'])
@@ -70,17 +71,20 @@ def edit_answer(answer_id, question_id):
         answer_to_edit = datamanager.get_answer_answer_id(answer_id)
         return render_template('edit-answer.html',
                                answer = answer_to_edit,
-                               answer_id = answer_id
-                               )
+                               answer_id=answer_id, logged_user=session['user_id'])
     edited_answer = request.form.to_dict()
     datamanager.update_answer(answer_id, edited_answer)
-    return redirect(url_for('display_question', _id = question_id))
+    return redirect(url_for('display_question', _id=question_id, logged_user=session['user_id']))
 
 
 @app.route('/question/<question_id>/delete')
 def delete_question(question_id):
-    datamanager.delete_question(question_id)
-    return redirect('/')
+    user_of_question = datamanager.get_question_by_id(question_id)
+    if session['user_id'] == user_of_question['user_id']:
+        datamanager.delete_question(question_id)
+        return redirect('/')
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/<question_id>/answer/<_id>/delete')
@@ -182,10 +186,13 @@ def login():
     user_name_to_check = request.form['user_name']
     password_to_check = request.form['password']
     hash_to_check = datamanager.get_hash(user_name_to_check)
-    is_verified = utils.verify_password(password_to_check, hash_to_check['hash'])
+    try:
+        is_verified = utils.verify_password(password_to_check, hash_to_check['hash'])
+    except:
+        error_message = "Wrong password or User Name"
+        return render_template('login.html', error_message=error_message)
     if is_verified == True:
         session['user_id'] = datamanager.get_user_id(user_name_to_check)['user_id']
-        session['user_name'] = user_name_to_check
         questions = datamanager.get_questions()
         main_page = 0
         return render_template("list.html",
