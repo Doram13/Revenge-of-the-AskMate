@@ -20,12 +20,15 @@ def index():
 
 @app.route('/add-question', methods=['GET', 'POST'])
 def add_question():
-    if request.method == 'GET':
-        return render_template('add-question.html')
-    _id = datamanager.append_question(request.form['message'],
+    if session['user_id'] is not None:
+        if request.method == 'GET':
+            return render_template('add-question.html')
+        _id = datamanager.append_question(request.form['message'],
                                       request.form['title'],
                                       request.form['image'])
-    return redirect(url_for('display_question', _id=_id, logged_user=session['user_id']))
+        return redirect(url_for('display_question', _id=_id, logged_user=session['user_id']))
+    else:
+        return render_template('login.html')
 
 
 @app.route('/question/<_id>')
@@ -48,15 +51,20 @@ def display_question(_id):
 
 @app.route('/question/<question_id>/new-answer',  methods=['GET', 'POST'])
 def post_answer(question_id):
-    if request.method == 'GET':
-        return render_template('new-answer.html', question_id=question_id, logged_user=session['user_id'])
+    if session['user_id'] is not None:
+        if request.method == 'GET':
+            return render_template('new-answer.html', question_id=question_id, logged_user=session['user_id'])
 
-    datamanager.append_answer(question_id, request.form['message'], request.form['image'])
-    return redirect(url_for('display_question', _id=question_id, logged_user=session['user_id']))
+        datamanager.append_answer(question_id, request.form['message'], request.form['image'])
+        return redirect(url_for('display_question', _id=question_id, logged_user=session['user_id']))
+    else:
+        return render_template('login.html')
+
 
 
 @app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
 def edit_question(question_id):
+    # if session['user_id'] is not USER_ID_OF_QUESTION...
     if request.method == 'GET':
         question_to_edit = datamanager.get_question_by_id(question_id)
         return render_template('edit-question.html',
@@ -72,6 +80,7 @@ def edit_question(question_id):
 
 @app.route('/edit/<question_id>/<answer_id>', methods=['GET', 'POST'])
 def edit_answer(answer_id, question_id):
+    # if session['user_id'] is not USER_ID_OF_QUESTION...
     if request.method == 'GET':
         answer_to_edit = datamanager.get_answer_answer_id(answer_id)
         return render_template('edit-answer.html',
@@ -96,6 +105,8 @@ def delete_question(question_id):
 
 @app.route('/<question_id>/answer/<_id>/delete')
 def delete_answer(question_id, _id):
+    # if session['user_id'] is not USER_ID_OF_ANSVER...
+
     datamanager.delete_one_answer(_id)
     return redirect(url_for('display_question', _id=question_id))
 
@@ -120,31 +131,43 @@ def list_all_questions():
 def order_list():
     main_page = 0
     sorted_list = datamanager.order_list_by_key(request.args['order_by'], request.args['order_direction'])
-    return render_template('list.html',
-                            questions=sorted_list,
-                            header = datamanager.list_header,
-                            main_page=main_page,
-                           logged_user_name=session['user_name'])
+    if session['user_name'] is None:
+        return render_template('list.html',
+                               questions=sorted_list,
+                               header=datamanager.list_header,
+                               main_page=main_page)
+    else:
+        return render_template('list.html',
+                               qestions=sorted_list,
+                               header=datamanager.list_header,
+                               main_page=main_page,
+                               logged_user_name=session['user_name'])
 
 
 @app.route("/question/<q_id>/<direction>")
 def question_vote(q_id, direction):
-    if direction == 'up':
-        datamanager.change_q_vote(q_id, 1)
+    if session['user_id'] is not None:
+        if direction == 'up':
+            datamanager.change_q_vote(q_id, 1)
+        else:
+            datamanager.change_q_vote(q_id, -1)
+        return redirect(url_for('display_question', _id=q_id))
     else:
-        datamanager.change_q_vote(q_id, -1)
-    return redirect(url_for('display_question', _id=q_id))
+        return redirect(url_for('login'))
 
 
 @app.route("/question/<q_id>/answer/<a_id>/<direction>")
 def answer_vote(a_id, q_id, direction):
-    if direction == 'up':
-        number = 1
-        datamanager.change_a_vote(a_id, number)
+    if session['user_id'] is not None:
+        if direction == 'up':
+            number = 1
+            datamanager.change_a_vote(a_id, number)
+        else:
+            number = -1
+            datamanager.change_a_vote(a_id, number)
+        return redirect(url_for('display_question', _id=q_id))
     else:
-        number = -1
-        datamanager.change_a_vote(a_id, number)
-    return redirect(url_for('display_question', _id=q_id))
+        return redirect(url_for('login'))
 
 
 @app.route('/search', methods = ['GET', 'POST'])
@@ -158,11 +181,14 @@ def search_questions():
 
 @app.route("/question/<question_id>/add-comment", methods=['GET', 'POST'])
 def add_comment_to_question(question_id):
-    if request.method == 'GET':
-        return render_template('add-comment.html', question_id=question_id, )
-    message = request.form['message']
-    datamanager.add_comment_to_question(question_id, message)
-    return redirect(url_for('display_question', _id=question_id))
+    if session['user_id'] is not None:
+        if request.method == 'GET':
+            return render_template('add-comment.html', question_id=question_id, )
+        message = request.form['message']
+        datamanager.add_comment_to_question(question_id, message)
+        return redirect(url_for('display_question', _id=question_id))
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/edit/<question_id>/comment/<_id>', methods=['GET', 'POST'])
