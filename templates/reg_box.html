@@ -2,9 +2,5 @@
 <div class="login">
     <a href="{{ url_for("registration") }}">Register new user</a>
     <a href="{{ url_for("login") }}">Login</a>
-    {% if not logged_user %}
-    <a href="{{ url_for("logout") }}">Logout</a>
-    {% endif %}
-
 </div>
 </header>
