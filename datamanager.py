@@ -6,7 +6,7 @@ from psycopg2 import sql
 list_header = ['id', 'submission_time', 'view_number', 'vote_number', 'title']
 answer_header = ['id', 'submission time', 'vote number', 'message', 'image', 'delete', 'edit']
 comment_header = ["message", "submission time", 'edited number', 'delete', 'edit']
-
+user_header = ['id', 'Name', 'Registered:']
 
 @connection.connection_handler
 def first_5_question(cursor):
@@ -301,3 +301,13 @@ def get_user_name_by_id(cursor, user_id):
                     """, {'user_id': user_id})
     user_name = cursor.fetchone()
     return user_name
+
+
+@connection.connection_handler
+def get_user_infos(cursor):
+    cursor.execute("""
+                    SELECT * FROM "user"
+                    ORDER BY user_id
+                    """)
+    users = cursor.fetchall()
+    return users

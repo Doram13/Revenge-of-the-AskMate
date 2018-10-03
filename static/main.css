@@ -1,11 +1,27 @@
-table button {
+table button    {
             width: 100%
         }
 
-body{
+body    {
     background-color: white;
+    display: flex;
 }
 
-div.login{
+header  {
+    display: inline-block;
+}
+header #list_all_user   {
+    align-self: flex-end;
+}
 
+table.table-striped {
+    background-color: lightblue;
+}
+
+h3{
+    align-self: center;
+}
+
+footer  {
+    justify-content: center;
 }

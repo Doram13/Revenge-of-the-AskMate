@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="container"><table class="table-striped">
+    <tr>
+    {% for title in header %}
+        <th>{{ title }}</th>
+    {% endfor %}
+    </tr>
+    {% for user in list_of_users %}
+    <tr>
+        <td>{{ user['user_id'] }}</td>
+        <td>{{ user['user_name'] }}</td>
+        <td>{{ user['date'] }}</td>
+    </tr>
+    {% endfor %}
+</table></div>
+{% include 'footer.html' %}
+
+{% endblock %}
