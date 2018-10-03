@@ -12,8 +12,8 @@ def index():
     return render_template("list.html",
                            questions=questions,
                            header=datamanager.list_header,
-                           main_page=main_page,
-                           logged_user=session['user_id'])
+                           main_page=main_page
+                           )
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
@@ -38,7 +38,9 @@ def display_question(_id):
                            header=datamanager.answer_header,
                            comment_header = datamanager.comment_header,
                            comments=datamanager.get_comments_by_question_id(_id),
-                           logged_user=session['user_id']
+                           logged_user=session['user_id'],
+                           logged_user_name=session['user_name']
+
                            )
 
 
@@ -58,7 +60,8 @@ def edit_question(question_id):
         return render_template('edit-question.html',
                                question = question_to_edit,
                                question_id=question_id,
-                               logged_user=session['user_id'])
+                               logged_user=session['user_id'],
+                               logged_user_name=session['user_name'])
     elif request.method == 'POST':
         edited_question = request.form.to_dict()
         datamanager.update_question(question_id, edited_question)
@@ -71,10 +74,12 @@ def edit_answer(answer_id, question_id):
         answer_to_edit = datamanager.get_answer_answer_id(answer_id)
         return render_template('edit-answer.html',
                                answer = answer_to_edit,
-                               answer_id=answer_id, logged_user=session['user_id'])
+                               answer_id=answer_id, logged_user=session['user_id'],
+                               logged_user_name=session['user_name'])
     edited_answer = request.form.to_dict()
     datamanager.update_answer(answer_id, edited_answer)
-    return redirect(url_for('display_question', _id=question_id, logged_user=session['user_id']))
+    return redirect(url_for('display_question', _id=question_id, logged_user=session['user_id'],
+                            logged_user_name=session['user_name']))
 
 
 @app.route('/question/<question_id>/delete')
@@ -100,7 +105,8 @@ def list_all_questions():
     return render_template("list.html",
                            questions=questions,
                            header=datamanager.list_header,
-                           main_page = main_page)
+                           main_page = main_page,
+                           logged_user_name=session['user_name'])
 
 
 @app.route('/ordered-list')
@@ -110,7 +116,8 @@ def order_list():
     return render_template('list.html',
                             questions=sorted_list,
                             header = datamanager.list_header,
-                            main_page=main_page)
+                            main_page=main_page,
+                           logged_user_name=session['user_name'])
 
 
 @app.route("/question/<q_id>/<direction>")
@@ -138,7 +145,8 @@ def search_questions():
     questions = datamanager.search_questions(request.form['search'])
     return render_template('list.html', questions = questions,
                                         header = datamanager.list_header,
-                                        main_page= 0)
+                                        main_page= 0,
+                           logged_user_name=session['user_name'])
 
 
 @app.route("/question/<question_id>/add-comment", methods=['GET', 'POST'])
@@ -193,13 +201,15 @@ def login():
         return render_template('login.html', error_message=error_message)
     if is_verified == True:
         session['user_id'] = datamanager.get_user_id(user_name_to_check)['user_id']
+        session['user_name'] = user_name_to_check
         questions = datamanager.get_questions()
         main_page = 0
         return render_template("list.html",
                                questions=questions,
                                header=datamanager.list_header,
                                main_page=main_page,
-                               logged_user=session['user_id'])
+                               logged_user=session['user_id'],
+                               logged_user_name=session['user_name'])
     else:
         error_message = "Wrong password or User Name"
         return render_template('login.html', error_message=error_message)
