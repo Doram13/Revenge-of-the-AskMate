@@ -146,7 +146,7 @@ def search_questions():
     return render_template('list.html', questions = questions,
                                         header = datamanager.list_header,
                                         main_page= 0,
-                           logged_user_name=session['user_name'])
+                                        logged_user_name=session['user_name'])
 
 
 @app.route("/question/<question_id>/add-comment", methods=['GET', 'POST'])
@@ -213,6 +213,13 @@ def login():
     else:
         error_message = "Wrong password or User Name"
         return render_template('login.html', error_message=error_message)
+
+
+@app.route('/logout')
+def logout():
+    session['user_id'] = None
+    session['user_name'] = None
+    return redirect('/')
 
 
 if __name__ == "__main__":
