@@ -2,7 +2,8 @@
 
 {% block content %}
 
-<div class="form-group" style="padding: 10px"><form method="POST" action="{{ url_for('edit_question', question_id=question_id) }}" >
+    <div class="form-group" style="padding: 10px">
+        <form method="POST" action="{{ url_for('edit_question', question_id=question['id']) }}">
         <label for="title"> Title</label><br>
         <input class="form-text" id="title" value="{{question['title']}}" name="title" size="100" minlength="5" required><br>
         <label for="message"> Message</label><br>
