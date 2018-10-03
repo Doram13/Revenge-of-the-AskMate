@@ -10,6 +10,9 @@
             <input type="text" id="password" name="password">
             <button type="submit"> Submit</button>
         </form>
+        {% if used_user_name == 1 %}
+            <p> Your User name is already used, please choose another one.</p>
+        {% endif %}
     </div>
 
 {% endblock %}

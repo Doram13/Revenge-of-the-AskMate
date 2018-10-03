@@ -246,10 +246,10 @@ def delete_one_comment(cursor, _id):
 @connection.connection_handler
 def create_user(cursor, new_user_name, hashed):
     cursor.execute("""
-    INSERT INTO "user" (user_name, hash) 
-            VALUES (%(new_user_name)s,%(hashed)s)
+    INSERT INTO "user" (user_name, hash, date) 
+            VALUES (%(new_user_name)s,%(hashed)s, %(time)s)
                     """,
-                   {'new_user_name': new_user_name, 'hashed': hashed})
+                   {'new_user_name': new_user_name, 'hashed': hashed, 'time': datetime.now()})
 
 
 @connection.connection_handler
@@ -270,3 +270,15 @@ def get_user_id(cursor, user_name):
     """, {'user_name': user_name})
     user_id = cursor.fetchone()
     return user_id
+
+
+@connection.connection_handler
+def check_unique_user_name(cursor, user_name):
+    cursor.execute("""
+    SELECT user_name FROM "user"
+    WHERE user_name= %(user_name)s""", {'user_name': user_name})
+    user_exist = cursor.fetchone()
+    if user_exist:
+        return True
+    else:
+        return False
