@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
-{% if logged_user %}
+{% if logged_user != 0 %}
 {% include 'user.html' %}
 {% else %}
 {% include 'reg_box.html' %}

@@ -9,12 +9,15 @@ app = Flask(__name__)
 def index():
     questions = datamanager.first_5_question()
     main_page = 1
-    session['user_name'] = None
-    session['user_id'] = None
+    if not session['user_id']:
+        session['user_name'] = 0
+        session['user_id'] = 0
     return render_template("list.html",
                            questions=questions,
                            header=datamanager.list_header,
-                           main_page=main_page
+                           main_page=main_page,
+                           logged_user=session['user_id'],
+                           logged_user_name=session['user_name']
                            )
 
 
@@ -75,7 +78,8 @@ def edit_question(question_id):
     elif request.method == 'POST':
         edited_question = request.form.to_dict()
         datamanager.update_question(question_id, edited_question)
-        return redirect(url_for('display_question', _id=question_id, logged_user=session['user_id']))
+        return redirect(url_for('display_question', _id=question_id, logged_user=session['user_id'],
+                               logged_user_name=session['user_name']))
 
 
 @app.route('/edit/<question_id>/<answer_id>', methods=['GET', 'POST'])
@@ -86,11 +90,14 @@ def edit_answer(answer_id, question_id):
         return render_template('edit-answer.html',
                                answer = answer_to_edit,
                                answer_id=answer_id, logged_user=session['user_id'],
-                               logged_user_name=session['user_name'])
+                               logged_user_name=session['user_name'],
+
+                               )
     edited_answer = request.form.to_dict()
     datamanager.update_answer(answer_id, edited_answer)
     return redirect(url_for('display_question', _id=question_id, logged_user=session['user_id'],
-                            logged_user_name=session['user_name']))
+                            logged_user_name=session['user_name'],
+                            ))
 
 
 @app.route('/question/<question_id>/delete')
@@ -119,11 +126,15 @@ def list_all_questions():
         return render_template('list.html',
                                questions=questions,
                                header=datamanager.list_header,
-                               main_page=main_page)
+                               main_page=main_page,
+                               logged_user=session['user_id'],
+                               logged_user_name=session['user_name']
+                               )
     return render_template("list.html",
                            questions=questions,
                            header=datamanager.list_header,
                            main_page = main_page,
+                           logged_user=session['user_id'],
                            logged_user_name=session['user_name'])
 
 
@@ -176,6 +187,7 @@ def search_questions():
     return render_template('list.html', questions = questions,
                                         header = datamanager.list_header,
                                         main_page= 0,
+                           logged_user=session['user_id'],
                            logged_user_name=session['user_name'])
 
 
@@ -196,7 +208,8 @@ def edit_comment(question_id, _id):
     if request.method == 'GET':
         return render_template('edit-comment.html',
                                comment = datamanager.get_comment_by_comment_id(_id),
-                               question_id=question_id)
+                               question_id=question_id, logged_user=session['user_id'],
+                               logged_user_name=session['user_name'])
     edited_comment = request.form.to_dict()
     datamanager.edit_comment_by_id(edited_comment, _id)
     return redirect(url_for('display_question', _id = question_id))
@@ -211,10 +224,12 @@ def delete_comment(question_id, _id):
 @app.route('/registration', methods=['GET', 'POST'])
 def registration():
     if request.method == 'GET':
-        return render_template('registration.html')
+        return render_template('registration.html', logged_user=session['user_id'],
+                               logged_user_name=session['user_name'])
     new_user_name = request.form['user_name']
     if datamanager.check_unique_user_name(new_user_name):
-        return render_template('registration.html', used_user_name=1)
+        return render_template('registration.html', logged_user=session['user_id'],
+                               logged_user_name=session['user_name'])
     hashed = utils.hash_password(request.form['password'])
     datamanager.create_user(new_user_name, hashed)
     return redirect('/')  # TODO: time of registration
@@ -223,7 +238,8 @@ def registration():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
-        return render_template('login.html')
+        return render_template('login.html', logged_user=session['user_id'],
+                               logged_user_name=session['user_name'])
     user_name_to_check = request.form['user_name']
     password_to_check = request.form['password']
     hash_to_check = datamanager.get_hash(user_name_to_check)
@@ -231,7 +247,8 @@ def login():
         is_verified = utils.verify_password(password_to_check, hash_to_check['hash'])
     except:
         error_message = "Wrong password or User Name"
-        return render_template('login.html', error_message=error_message)
+        return render_template('login.html', error_message=error_message, logged_user=session['user_id'],
+                               logged_user_name=session['user_name'])
     if is_verified == True:
         session['user_id'] = datamanager.get_user_id(user_name_to_check)['user_id']
         session['user_name'] = user_name_to_check
@@ -245,7 +262,15 @@ def login():
                                logged_user_name=session['user_name'])
     else:
         error_message = "Wrong password or User Name"
-        return render_template('login.html', error_message=error_message)
+        return render_template('login.html', error_message=error_message, logged_user=session['user_id'],
+                               logged_user_name=session['user_name'])
+
+
+@app.route('/logout')
+def logout():
+    session['user_id'] = 0
+    session['user_name'] = 0
+    return redirect('/')
 
 
 if __name__ == "__main__":
