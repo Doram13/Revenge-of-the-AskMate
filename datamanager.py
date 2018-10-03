@@ -293,3 +293,11 @@ def check_unique_user_name(cursor, user_name):
         return False
 
 
+@connection.connection_handler
+def get_user_name_by_id(cursor, user_id):
+    cursor.execute("""
+                    SELECT user_name FROM "user"
+                    WHERE user_id = %(user_id)s
+                    """, {'user_id': user_id})
+    user_name = cursor.fetchone()
+    return user_name

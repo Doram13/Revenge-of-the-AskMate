@@ -12,7 +12,8 @@ def index():
     return render_template("list.html",
                            questions = questions,
                            header = datamanager.list_header,
-                           main_page = main_page)
+                           main_page = main_page
+                           )
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
@@ -183,7 +184,8 @@ def login():
     hash_to_check = datamanager.get_hash(user_name_to_check)
     is_verified = utils.verify_password(password_to_check, hash_to_check['hash'])
     if is_verified == True:
-        session['user_id'] = datamanager.get_user_id(user_name_to_check)
+        session['user_id'] = datamanager.get_user_id(user_name_to_check)['user_id']
+        session['user_name'] = user_name_to_check
         questions = datamanager.get_questions()
         main_page = 0
         return render_template("list.html",
