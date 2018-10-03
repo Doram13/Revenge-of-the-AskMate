@@ -36,7 +36,8 @@ def display_question(_id):
                            question=question,
                            header=datamanager.answer_header,
                            comment_header = datamanager.comment_header,
-                           comments = datamanager.get_comments_by_question_id(_id)
+                           comments = datamanager.get_comments_by_question_id(_id),
+                           logged_user='baba'
                            )
 
 
@@ -68,7 +69,8 @@ def edit_answer(answer_id, question_id):
         answer_to_edit = datamanager.get_answer_answer_id(answer_id)
         return render_template('edit-answer.html',
                                answer = answer_to_edit,
-                               answer_id = answer_id)
+                               answer_id = answer_id
+                               )
     edited_answer = request.form.to_dict()
     datamanager.update_answer(answer_id, edited_answer)
     return redirect(url_for('display_question', _id = question_id))

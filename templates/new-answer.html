@@ -1,7 +1,6 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<body>
 <div class="form-group" style="padding: 10px">
     <form method="POST" action="{{ url_for("post_answer", question_id=question_id) }}">
         <label for="message"> Answer:</label><br>
@@ -11,6 +10,6 @@
         <button type="submit">Add New Answer</button>
     </form>
     <br></div>
-<h2><a href='/'> Go back to the homepage</a></h2>
-</body>
+
+{% include 'footer.html' %}
 {% endblock %}
