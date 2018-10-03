@@ -48,6 +48,15 @@ def get_question_by_id(cursor, _id):
 
 
 @connection.connection_handler
+def get_user_id_of_question(cursor, question_id):
+    cursor.execute("""
+    SELECT user_id FROM question
+    WHERE id=%(question_id)s;""", {"question_id": question_id}
+
+                   )
+
+
+@connection.connection_handler
 def append_question(cursor, message, title, image):
     cursor.execute("""
                     INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
