@@ -163,8 +163,10 @@ def delete_comment(question_id, _id):
 @app.route('/registration', methods=['GET', 'POST'])
 def registration():
     if request.method == 'GET':
-        return render_template(('registration.html'))
+        return render_template('registration.html')
     new_user_name = request.form['user_name']
+    if datamanager.check_unique_user_name(new_user_name):
+        return render_template('registration.html', used_user_name=1)
     hashed = utils.hash_password(request.form['password'])
     datamanager.create_user(new_user_name, hashed)
     return redirect('/')  # TODO: time of registration
