@@ -16,9 +16,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
-<div class="login"><a href="{{ url_for("registration") }}">Register new user</a>
-<a href="{{ url_for("login") }}">Login</a></div>
+{% if logged_user %}
+{% include 'user.html' %}
+{% else %}
+{% include 'reg_box.html' %}
+{% endif %}
 {% block content %}{% endblock %}
-{% block footer %}{% endblock %}  <!-- todo: create footer and organize the back to home links in it -->
 </body>
 </html>

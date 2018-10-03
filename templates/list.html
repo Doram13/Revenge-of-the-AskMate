@@ -1,8 +1,9 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<body>
-
+{% if logged_user %}
+{% include 'user.html' %}
+{% endif %}
 <div class="container" align="center">
     <h1>Ask Mate</h1>
 </div>
@@ -41,9 +42,9 @@
     {% if main_page == 1 %}
         <h3><a href='/list'>List all question</a></h3>
     {% elif main_page == 0 %}
-        <h3><a href='/'> Go back to the homepage</a></h3>
+        {% include 'footer.html' %}
     {% endif %}
 </div>
 
-</body>
+
 {% endblock %}

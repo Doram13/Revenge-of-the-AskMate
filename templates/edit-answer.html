@@ -1,7 +1,6 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<body>
 <div class="form-group" style="padding: 10px"><form method="POST" action="{{ url_for('edit_answer', answer_id=answer['id'], question_id=answer['question_id']) }}" >
         <label for="message"> Message</label><br>
         <textarea id="message" name="message" rows="5" cols="80" required>{{ answer['message'] }}</textarea><br>
@@ -9,6 +8,6 @@
         <input type="text" id="image" name="image" value="{{ answer['image'] }}">
     <button type="submit">Edit Answer</button>
 </form></div><br>
-<h2><a href='/'> Go back to the homepage</a></h2>
-</body>
+
+{% include 'footer.html' %}
 {% endblock %}
