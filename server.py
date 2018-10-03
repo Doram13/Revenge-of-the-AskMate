@@ -9,6 +9,8 @@ app = Flask(__name__)
 def index():
     questions = datamanager.first_5_question()
     main_page = 1
+    session['user_name'] = None
+    session['user_id'] = None
     return render_template("list.html",
                            questions=questions,
                            header=datamanager.list_header,
@@ -102,6 +104,11 @@ def delete_answer(question_id, _id):
 def list_all_questions():
     questions = datamanager.get_questions()
     main_page = 0
+    if session['user_name'] is None:
+        return render_template('list.html',
+                               questions=questions,
+                               header=datamanager.list_header,
+                               main_page=main_page)
     return render_template("list.html",
                            questions=questions,
                            header=datamanager.list_header,
