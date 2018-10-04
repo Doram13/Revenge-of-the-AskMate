@@ -88,7 +88,7 @@ def edit_question(question_id):
             return redirect(url_for('display_question', _id=question_id, logged_user=session['user_id'],
                                     logged_user_name=session['user_name']))
     else:
-        return render_template('login.html', error_message=datamanager.error_message)
+        return render_template('login.html', error_message=datamanager.error_message_wrong_user)
 
 
 @app.route('/edit/<question_id>/<answer_id>', methods=['GET', 'POST'])
@@ -121,9 +121,9 @@ def delete_question(question_id):
             datamanager.delete_question(question_id)
             return redirect('/')
         else:
-            return redirect(url_for('login'))
+            return render_template('login.html', error_message=datamanager.error_message_wrong_user)
     else:
-        return render_template('login.html', error_message=datamanager.error_message)
+        return render_template('login.html', error_message=datamanager.error_message_wrong_user)
 
 
 @app.route('/<question_id>/answer/<_id>/delete')
@@ -171,7 +171,7 @@ def question_vote(q_id, direction):
             datamanager.change_reputation(datamanager.get_user_name_of_question(q_id)['user_name'], -2)
         return redirect(url_for('display_question', _id=q_id))
     else:
-        return redirect(url_for('login'))
+        return render_template('login.html', error_message=datamanager.error_message)
 
 
 @app.route("/question/<q_id>/answer/<a_id>/<direction>")
@@ -187,7 +187,7 @@ def answer_vote(a_id, q_id, direction):
             datamanager.change_reputation(datamanager.get_user_name_of_answer(a_id)['user_name'], -2)
         return redirect(url_for('display_question', _id=q_id))
     else:
-        return redirect(url_for('login'))
+        return render_template('login.html', error_message=datamanager.error_message)
 
 
 @app.route('/search', methods=['GET', 'POST'])
@@ -210,7 +210,7 @@ def add_comment_to_question(question_id):
         datamanager.add_comment_to_question(question_id, message, session['user_id'])
         return redirect(url_for('display_question', _id=question_id))
     else:
-        return redirect(url_for('login'))
+        return render_template('login.html', error_message=datamanager.error_message)
 
 
 @app.route('/edit/<question_id>/comment/<_id>', methods=['GET', 'POST'])
@@ -226,7 +226,7 @@ def edit_comment(question_id, _id):
         datamanager.edit_comment_by_id(edited_comment, _id)
         return redirect(url_for('display_question', _id=question_id))
     else:
-        return render_template('login.html', error_message=datamanager.error_message)
+        return render_template('login.html', error_message=datamanager.error_message_wrong_user)
 
 
 @app.route('/<question_id>/comment/<_id>/delete')
@@ -236,7 +236,7 @@ def delete_comment(question_id, _id):
         datamanager.delete_one_comment(_id)
         return redirect(url_for('display_question', _id=question_id))
     else:
-        return render_template('login.html', error_message=datamanager.error_message)
+        return render_template('login.html', error_message=datamanager.error_message_wrong_user)
 
 
 @app.route('/registration', methods=['GET', 'POST'])
@@ -307,6 +307,11 @@ def accept_answer(a_id, question_id):
         datamanager.change_reputation(datamanager.get_user_name_of_answer(a_id)['user_name'], 15)
     else:
         return redirect(url_for('display_question', _id=question_id))
+
+
+@app.route('/user/<user_id>')
+def user_details(user_id):
+    pass
 
 
 if __name__ == "__main__":
