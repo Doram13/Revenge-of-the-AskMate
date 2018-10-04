@@ -8,16 +8,9 @@ answer_header = ['id', 'submission time', 'vote number', 'message', 'image', ' '
 error_message = "You have to be logged in!"
 error_message_wrong_user = "You are not authorized!"
 comment_header = ["message", "submission time", 'edited number']
-user_header = ['id', 'Name', 'Registered:', 'Reputation']
 
-@connection.connection_handler
-def first_5_question(cursor):
-    cursor.execute("""
-            SELECT * FROM question
-            ORDER BY submission_time DESC LIMIT 5;
-    """)
-    five_questions = cursor.fetchall()
-    return utils.get_readable_date(five_questions)
+def get_first_five_question():
+    return utils.get_first_five_dictionary(get_questions())
 
 
 @connection.connection_handler

@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    questions = datamanager.first_5_question()
+    questions = datamanager.get_first_five_question()
     main_page = 1
     if not session['user_id']:
         session['user_name'] = 0
@@ -19,6 +19,7 @@ def index():
                            logged_user=session['user_id'],
                            logged_user_name=session['user_name']
                            )
+
 
 
 @app.route('/add-question', methods=['GET', 'POST'])
@@ -158,7 +159,6 @@ def order_list():
                            main_page=main_page,
                            logged_user=session['user_id'],
                            logged_user_name=session['user_name'])
-
 
 @app.route("/question/<q_id>/<direction>")
 def question_vote(q_id, direction):

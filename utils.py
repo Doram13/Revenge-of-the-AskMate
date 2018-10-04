@@ -8,7 +8,7 @@ def get_readable_date(list_of_dict):
         dict['submission_time'] = str(dict['submission_time'])[:16]
     return list_of_dict
 
-
+  
 def get_readable_date_for_users(list_of_dict):
     for dict in list_of_dict:
         dict['date'] = str(dict['date'])[:16]
@@ -25,3 +25,6 @@ def verify_password(plain_text_password, hashed_password):
     hashed_bytes_password = hashed_password.encode('utf-8')
     return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
 
+  
+def get_first_five_dictionary(list_of_dict):
+    return list_of_dict[:5]
