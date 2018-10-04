@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container justify-content-center" id="login">
+        <form method="POST" action="{{ url_for('login') }}">
+            <div class="row justify-content-center">
+                <div class="col col-sm-4 col-centered" >
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>
+                                <label for="user_name">User Name:</label>
+                                <input type="text" id="user_name" name="user_name">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="password">Password:</label>
+                                <input type="text" id="password" name="password">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <button type="submit">Login</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </form>
+        <div class="row justify-content-center">
+            <div class="col-sm-4 col-centered">
+                {% if error_message is defined %}
+                    <h3 class="text-primary"> {{ error_message }}</h3>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% include 'footer.html' %}
+{% endblock %}

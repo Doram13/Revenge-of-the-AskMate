@@ -3,10 +3,11 @@ import utils
 from datetime import datetime
 from psycopg2 import sql
 
-list_header = ['id', 'submission time', 'view number', 'vote number', 'title']
-answer_header = ['id', 'submission time', 'vote number', 'message', 'image', 'delete', 'edit']
-comment_header = ["message", "submission time", 'edited number', 'delete', 'edit']
-
+list_header = ['id', 'submission_time', 'view_number', 'vote_number', 'title']
+answer_header = ['id', 'submission time', 'vote number', 'message', 'image', ' ', ' ', 'accepted']
+error_message = "You have to be logged in!"
+error_message_wrong_user = "You are not authorized!"
+comment_header = ["message", "submission time", 'edited number']
 
 def get_first_five_question():
     return utils.get_first_five_dictionary(get_questions())
@@ -42,14 +43,24 @@ def get_question_by_id(cursor, _id):
 
 
 @connection.connection_handler
-def append_question(cursor, message, title, image):
+def get_user_id_of_question(cursor, question_id):
     cursor.execute("""
-                    INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
-                    VALUES (%(submission_time)s, 0, 0, %(title)s, %(message)s, %(image)s);
+    SELECT user_id FROM question
+    WHERE id=%(question_id)s;""", {"question_id": question_id}
+
+                   )
+
+
+@connection.connection_handler
+def append_question(cursor, message, title, image, user_id):
+    cursor.execute("""
+                    INSERT INTO question (submission_time, view_number, vote_number, title, message, image, user_id)
+                    VALUES (%(submission_time)s, 0, 0, %(title)s, %(message)s, %(image)s, %(user_id)s);
                     SELECT id FROM question
                     ORDER BY id DESC LIMIT 1;
                     """,
-                   {'submission_time': datetime.now(), 'title': title, 'message': message, 'image': image})
+                   {'submission_time': datetime.now(), 'title': title, 'message': message, 'image': image,
+                    'user_id': user_id})
     _id = cursor.fetchall()
     return _id[0]['id']
 
@@ -75,12 +86,13 @@ def get_answer_answer_id(cursor, _id):
 
 
 @connection.connection_handler
-def append_answer(cursor, question_id, message, image):
+def append_answer(cursor, question_id, message, image, user_id):
     cursor.execute("""
-                    INSERT INTO answer (submission_time, vote_number, question_id, message, image) 
-                    VALUES (%(time)s, 0, %(question_id)s, %(message)s, %(image)s)
+                    INSERT INTO answer (submission_time, vote_number, question_id, message, image, user_id, accepted) 
+                    VALUES (%(time)s, 0, %(question_id)s, %(message)s, %(image)s, %(user_id)s, FALSE )
                     """,
-                   {'time': datetime.now(), 'question_id': question_id, 'message': message, 'image': image})
+                   {'time': datetime.now(), 'question_id': question_id, 'message': message, 'image': image,
+                    'user_id': user_id})
 
 
 @connection.connection_handler
@@ -132,7 +144,7 @@ def order_list_by_key(cursor, col, order):
                 format(col=sql.Identifier(col))
         )
         new_list = cursor.fetchall()
-        return new_list
+        return utils.get_readable_date(new_list)
     elif order == "desc":
         cursor.execute(
             sql.SQL("""
@@ -141,7 +153,7 @@ def order_list_by_key(cursor, col, order):
                 format(col=sql.Identifier(col))
         )
         new_list = cursor.fetchall()
-        return new_list
+        return utils.get_readable_date(new_list)
 
 
 @connection.connection_handler
@@ -221,12 +233,12 @@ def edit_comment_by_id(cursor, edited_comment, _id):
 
 
 @connection.connection_handler
-def add_comment_to_question(cursor, question_id, message):
+def add_comment_to_question(cursor, question_id, message, user_id):
     cursor.execute("""
-                    INSERT INTO comment (question_id, message, submission_time, edited_count)
-                    VALUES (%(question_id)s, %(message)s, %(time)s, 0)
+                    INSERT INTO comment (question_id, message, submission_time, edited_count, user_id)
+                    VALUES (%(question_id)s, %(message)s, %(time)s, 0, %(user_id)s)
  """,
-                   {'question_id': question_id, 'message': message, 'time': datetime.now()})
+                   {'question_id': question_id, 'message': message, 'time': datetime.now(), 'user_id': user_id})
 
 
 @connection.connection_handler
@@ -235,3 +247,141 @@ def delete_one_comment(cursor, _id):
     DELETE FROM comment
     WHERE id = %(_id)s;""",
                    {'_id': _id})
+
+
+@connection.connection_handler
+def create_user(cursor, new_user_name, hashed):
+    cursor.execute("""
+    INSERT INTO "user" (user_name, hash, date) 
+            VALUES (%(new_user_name)s,%(hashed)s, %(time)s)
+                    """,
+                   {'new_user_name': new_user_name, 'hashed': hashed, 'time': datetime.now()})
+
+
+@connection.connection_handler
+def get_hash(cursor, user_name):
+    cursor.execute("""
+    SELECT hash FROM "user"
+    WHERE user_name = %(user_name)s
+    """, {'user_name': user_name})
+    hash_of_user = cursor.fetchone()
+    return hash_of_user
+
+
+@connection.connection_handler
+def get_user_id(cursor, user_name):
+    cursor.execute("""
+    SELECT user_id FROM "user"
+    WHERE user_name = %(user_name)s
+    """, {'user_name': user_name})
+    user_id = cursor.fetchone()
+    return user_id
+
+
+@connection.connection_handler
+def check_unique_user_name(cursor, user_name):
+    cursor.execute("""
+    SELECT user_name FROM "user"
+    WHERE user_name= %(user_name)s""", {'user_name': user_name})
+    user_exist = cursor.fetchone()
+    if user_exist:
+        return True
+    else:
+        return False
+
+
+@connection.connection_handler
+def get_user_name_by_id(cursor, user_id):
+    cursor.execute("""
+                    SELECT user_name FROM "user"
+                    WHERE user_id = %(user_id)s
+                    """, {'user_id': user_id})
+    user_name = cursor.fetchone()
+    return user_name
+
+
+@connection.connection_handler
+def get_user_name_of_question(cursor, question_id):
+    cursor.execute("""
+                    SELECT "user".user_name FROM "user"
+                    JOIN question ON question.user_id="user".user_id
+                    WHERE question.id = %(question_id)s """, {'question_id': question_id})
+    author = cursor.fetchone()
+    return author
+
+
+@connection.connection_handler
+def get_user_name_of_answer(cursor, answer_id):
+    cursor.execute("""
+                    SELECT "user".user_name FROM "user"
+                    FULL JOIN answer ON answer.user_id="user".user_id
+                    WHERE answer.id = %(answer_id)s """, {'answer_id': answer_id})
+    author = cursor.fetchone()
+    return author
+
+
+@connection.connection_handler
+def get_user_infos(cursor):
+    cursor.execute("""
+                    SELECT * FROM "user"
+                    ORDER BY user_id
+                    """)
+    users = cursor.fetchall()
+    return users
+
+
+@connection.connection_handler
+def get_user_name_of_comment(cursor, _id):
+    cursor.execute(""" 
+    SELECT "user".user_name FROM "user"
+    FULL JOIN comment ON comment.id="user".user_id
+    WHERE comment.id = %(_id)s """, {'_id': _id})
+    author = cursor.fetchone()
+    return author
+
+
+@connection.connection_handler
+def accept_answer(cursor, a_id):
+    cursor.execute("""
+    UPDATE answer
+    SET accepted = TRUE
+    WHERE id=%(a_id)s
+    """, {'a_id': a_id})
+
+@connection.connection_handler
+def change_reputation(cursor, user_name, change):
+    cursor.execute("""
+    UPDATE "user"
+    SET reputation = %(change)s
+    WHERE user_name = %(user_name)s
+    """, {'change': change, 'user_name': user_name})
+
+
+@connection.connection_handler
+def get_questions_by_user_id(cursor, user_id):
+    cursor.execute("""
+                   SELECT * FROM question
+                   WHERE user_id = %(user_id)s""",
+                   {'user_id': user_id})
+    questions = cursor.fetchall()
+    return utils.get_readable_date(questions)
+
+
+@connection.connection_handler
+def get_answers_by_user_id(cursor, user_id):
+    cursor.execute("""
+                   SELECT * FROM answer
+                   WHERE user_id = %(user_id)s""",
+                   {'user_id': user_id})
+    answers = cursor.fetchall()
+    return utils.get_readable_date(answers)
+
+
+@connection.connection_handler
+def get_comments_by_user_id(cursor, user_id):
+    cursor.execute("""
+                   SELECT * FROM comment
+                   WHERE user_id = %(user_id)s""",
+                   {'user_id': user_id})
+    comments = cursor.fetchall()
+    return utils.get_readable_date(comments)

@@ -1,0 +1,68 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h3 class="text-primary" align="center">{{ logged_user_name }}'s activity:</h3>
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <h5 align="center">Questions I asked:</h5>
+            <table class="table table-striped table-sm">
+                <tr>
+                    <th>Title</th>
+                    <th>Submission Time</th>
+                    <th>Vote number</th>
+                    <th>View number</th>
+                {% for question in questions %}
+                <tr>
+                    <td><a href="{{ url_for('display_question', _id=question['id']) }}">{{question['title']}}</a></td>
+                    <td>{{ question['submission_time'] }}</td>
+                    <td>{{ question['vote_number'] }}</td>
+                    <td>{{ question['view_number'] }}</td>
+                {% endfor %}
+                </tr>
+            </table>
+        </div>
+        <div class="col">
+        <h5 align="center">Answers I gave:</h5>
+            <table class="table table-striped table-sm">
+                <tr>
+                    <th>Message</th>
+                    <th>Submission Time</th>
+                    <th>Vote number</th>
+                {% for answer in answers %}
+                <tr>
+                    <td>{{ answer['message']}}</td>
+                    <td>{{ answer['submission_time'] }}</td>
+                    <td>{{ answer['vote_number'] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col">
+            <h5 align="center">Comments I commented:</h5>
+                <table class="table table-striped table-sm">
+                    <tr>
+                        <th>Message</th>
+                        <th>Submission Time</th>
+                        <th>Edited Count</th>
+                    {% for comment in comments %}
+                    <tr>
+                        <td>{{ comment['message'] }}</td>
+                        <td>{{ comment['submission_time'] }}</td>
+                        <td>{{ comment['edited_count'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+
+    </div>
+</div>
+
+{% include 'footer.html' %}
+
+{% endblock %}

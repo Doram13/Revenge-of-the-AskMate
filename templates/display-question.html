@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<body>
+
 <div class='container'>
     <h1> {{ question ["title"] }}</h1>
     <h3>Question Message:</h3>
@@ -13,13 +13,19 @@
     {% endif %}
 <br>
 <br>
+    {% if logged_user != 0 %}
     <h5>Vote Number: </h5>
     <h5><a href="/question/{{ question["id"] }}/up">↥</a>{{ question["vote_number"] }} vote(s) <a
             href="/question/{{ question["id"] }}/down">↧</a></h5>
-    {{ question("image") if image is defined }}
+    {% else %}
+    <h5>Vote Number: </h5>
+    {{ question["vote_number"] }} vote(s)
+    {% endif %}
+
+    {{ question["image"] if image is defined }}
 
 
-        <table class="table-striped">
+        <table class="table-sm">
         {% if comments %}
         {% for title in comment_header %}
             <th class="text-center">{{ title }}</th>
@@ -31,26 +37,30 @@
                 <td align="center" >{{comment['submission_time']}}</td>
                 <td align="center" >{{comment['edited_count']}}</td>
                 <td align="center">
+                {% if logged_user != 0 %}
                 <form>
                     <button formaction="/{{ comment['question_id'] }}/comment/{{ comment["id"] }}/delete"> Delete</button>
                 </form>
-                <td style="width:5%" align="center">
+                <td align="center">
                 <form>
                     <button formaction="/edit/{{ comment["question_id"] }}/comment/{{ comment["id"] }}"> Edit</button>
-                </form>
-            </td>
+                </form></td>
+                {% endif %}
+
+
+
             </tr>
         {% endfor %}
         {% endif %}
+        {% if logged_user != 0 %}
             <tr><td align="center" colspan="6"><a href="{{ url_for("add_comment_to_question", question_id = question['id']) }}">Add new comment</a></td></tr>
+        {% endif %}
         </table>
 
 
     {% if answers %}
         <h3>Answers:</h3>
-        <table class="table-striped">
-        <table class="table-striped" style="background-color: wheat">
-
+        <table class="table table-striped">
             {% for head in header %}
                 <th class="text-center">{{ head }}</th>
             {% endfor %}
@@ -59,9 +69,13 @@
                 <tr>
                     <td style="width:5%" align="center">{{ answer["id"] }}</td>
                     <td style="width:5%" align="center">{{ answer["submission_time"] }}</td>
-                    <td style="width:10%" align="center"><a
-                            href="/question/{{ question['id'] }}/answer/{{ answer["id"] }}/up">↥</a>
+                    <td style="width:10%" align="center">
+                        {% if logged_user != 0 %}
+                            <a href="/question/{{ question['id'] }}/answer/{{ answer["id"] }}/up">↥</a>
                         {{ answer["vote_number"] }} <a href="/question/{{ question['id'] }}/answer/{{ answer["id"] }}/down">↧</a>
+                        {% else %}
+                            {{ answer["vote_number"] }}
+                        {% endif %}
                     </td>
                     <td style="width:60%" align="center">{{ answer["message"] }}</td>
                     <td style="width:20%" align="center">
@@ -70,12 +84,29 @@
                         {% endif %}
                     </td>
                     <td style="width:5%" align="center">
+                        {% if logged_user != 0 %}
                         <form>
-                            <button formaction="/{{ answer['question_id'] }}/answer/{{ answer["id"] }}/delete"> Delete</button>
+                            <button formaction="/{{ answer['question_id'] }}/answer/{{ answer["id"] }}/delete">Delete
+                            </button>
                         </form>
                         <td align="center">
-                    <form><button formaction="/edit/{{ answer["question_id"] }}/{{ answer["id"] }}"> Edit  </button></form>
-                    </td>
+                            <form>
+                                <button formaction="/edit/{{ answer["question_id"] }}/{{ answer["id"] }}">Edit</button>
+                            </form>
+                        </td>
+                        {% endif %}
+                    {% if answer['accepted'] == True %}
+                        <td align="center"> Accepted!</td>
+                    {% endif %}
+                    {% if answer['accepted'] == False %}
+                        <td>
+                            <form>
+                                <button formaction="/question/{{ answer["question_id"] }}/answer/{{ answer["id"] }}/accept">
+                                    Accept
+                                </button>
+                            </form>
+                        </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         </table>
@@ -83,10 +114,11 @@
     {% else %}
         <h5>There are no answer for this question yet.</h5>
     {% endif %}
-
+    {% if logged_user != 0 %}
     <h3><a href="{{ url_for("post_answer", question_id=question["id"]) }}"> Add New Answer</a><br>
         <a href="{{ url_for("edit_question", question_id=question["id"]) }}"> Update Question</a><br>
         <a href="/question/{{ question['id'] }}/delete"> Delete Question</a></h3>
-    <h2><a href='/'> Go back to the homepage</a></h2></div>
-</body>
+    {% endif %}
+
+{% include 'footer.html' %}
 {% endblock %}
