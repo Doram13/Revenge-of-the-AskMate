@@ -123,7 +123,7 @@ def delete_question(question_id):
         else:
             return redirect(url_for('login'))
     else:
-        return redirect(url_for('login'))
+        return render_template('login.html', error_message=datamanager.error_message)
 
 
 @app.route('/<question_id>/answer/<_id>/delete')
@@ -293,6 +293,19 @@ def list_all_user():
                            list_of_users=utils.get_readable_date_for_users(datamanager.get_user_infos()),
                            header=datamanager.user_header, logged_user=session['user_id'],
                            logged_user_name=session['user_name'])
+
+
+@app.route('//question/<question_id>/answer/<a_id>/accept')
+def accept_answer(a_id, question_id):
+    author = datamanager.get_user_name_of_question(question_id)
+    if author == session['user_name']:
+        datamanager.accept_answer(a_id)
+    else:
+        return redirect(url_for('display_question', _id=question_id))
+
+
+
+
 
 
 if __name__ == "__main__":

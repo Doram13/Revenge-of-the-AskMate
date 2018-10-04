@@ -4,7 +4,7 @@ from datetime import datetime
 from psycopg2 import sql
 
 list_header = ['id', 'submission_time', 'view_number', 'vote_number', 'title']
-answer_header = ['id', 'submission time', 'vote number', 'message', 'image', ' ', ' ']
+answer_header = ['id', 'submission time', 'vote number', 'message', 'image', ' ', ' ', 'accepted']
 error_message = "You have to be logged in!"
 error_message_wrong_user = "You are not authorized!"
 comment_header = ["message", "submission time", 'edited number']
@@ -95,8 +95,8 @@ def get_answer_answer_id(cursor, _id):
 @connection.connection_handler
 def append_answer(cursor, question_id, message, image, user_id):
     cursor.execute("""
-                    INSERT INTO answer (submission_time, vote_number, question_id, message, image, user_id) 
-                    VALUES (%(time)s, 0, %(question_id)s, %(message)s, %(image)s, %(user_id)s)
+                    INSERT INTO answer (submission_time, vote_number, question_id, message, image, user_id, accepted) 
+                    VALUES (%(time)s, 0, %(question_id)s, %(message)s, %(image)s, %(user_id)s, FALSE )
                     """,
                    {'time': datetime.now(), 'question_id': question_id, 'message': message, 'image': image,
                     'user_id': user_id})
@@ -346,3 +346,11 @@ def get_user_name_of_comment(cursor, _id):
     author = cursor.fetchone()
     return author
 
+
+@connection.connection_handler
+def accept_answer(cursor, a_id):
+    cursor.execute("""
+    UPDATE answer
+    SET accepted = TRUE
+    WHERE id=%(a_id)s
+    """, {'a_id': a_id})
