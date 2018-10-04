@@ -3,11 +3,11 @@ import utils
 from datetime import datetime
 from psycopg2 import sql
 
-list_header = ['id', 'submission_time', 'view_number', 'vote_number', 'title']
-answer_header = ['id', 'submission time', 'vote number', 'message', 'image', 'delete', 'edit', 'accepted']
-error_message = "You are not allowed to modify this, because you're not the author of it"
+list_header = ['ID', 'submission_time', 'view_number', 'vote_number', 'title']
+answer_header = ['ID', 'submission time', 'vote number', 'message', 'image', 'delete', 'edit', 'accepted']
+error_message = "You are not allowed to modify this, because you're not the author of it."
 comment_header = ["message", "submission time", 'edited number']
-user_header = ['id', 'Name', 'Registered:']
+user_header = ['ID', 'Name', 'Registered:', 'Reputation']
 
 @connection.connection_handler
 def first_5_question(cursor):
@@ -353,3 +353,12 @@ def accept_answer(cursor, a_id):
     SET accepted = TRUE
     WHERE id=%(a_id)s
     """, {'a_id': a_id})
+
+
+@connection.connection_handler
+def change_reputation(cursor, user_name, change):
+    cursor.execute("""
+    UPDATE "user"
+    SET reputation = %(change)s
+    WHERE user_name = %(user_name)s
+    """, {'change': change, 'user_name': user_name})

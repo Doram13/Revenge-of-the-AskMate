@@ -165,8 +165,10 @@ def question_vote(q_id, direction):
     if session['user_id'] != 0:
         if direction == 'up':
             datamanager.change_q_vote(q_id, 1)
+            datamanager.change_reputation(datamanager.get_user_name_of_question(q_id)['user_name'], 5)
         else:
             datamanager.change_q_vote(q_id, -1)
+            datamanager.change_reputation(datamanager.get_user_name_of_question(q_id)['user_name'], -2)
         return redirect(url_for('display_question', _id=q_id))
     else:
         return redirect(url_for('login'))
@@ -178,9 +180,11 @@ def answer_vote(a_id, q_id, direction):
         if direction == 'up':
             number = 1
             datamanager.change_a_vote(a_id, number)
+            datamanager.change_reputation(datamanager.get_user_name_of_answer(a_id)['user_name'], 10)
         else:
             number = -1
             datamanager.change_a_vote(a_id, number)
+            datamanager.change_reputation(datamanager.get_user_name_of_answer(a_id)['user_name'], -2)
         return redirect(url_for('display_question', _id=q_id))
     else:
         return redirect(url_for('login'))
@@ -295,17 +299,14 @@ def list_all_user():
                            logged_user_name=session['user_name'])
 
 
-@app.route('//question/<question_id>/answer/<a_id>/accept')
+@app.route('/question/<question_id>/answer/<a_id>/accept')
 def accept_answer(a_id, question_id):
     author = datamanager.get_user_name_of_question(question_id)
     if author == session['user_name']:
         datamanager.accept_answer(a_id)
+        datamanager.change_reputation(datamanager.get_user_name_of_answer(a_id)['user_name'], 15)
     else:
         return redirect(url_for('display_question', _id=question_id))
-
-
-
-
 
 
 if __name__ == "__main__":
