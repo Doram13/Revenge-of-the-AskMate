@@ -6,6 +6,7 @@ from psycopg2 import sql
 list_header = ['id', 'submission_time', 'view_number', 'vote_number', 'title']
 answer_header = ['id', 'submission time', 'vote number', 'message', 'image', 'delete', 'edit']
 comment_header = ["message", "submission time", 'edited number', 'delete', 'edit']
+error_message = "You are not allowed to modify this, because you're not the author of it"
 
 
 @connection.connection_handler
@@ -238,12 +239,12 @@ def edit_comment_by_id(cursor, edited_comment, _id):
 
 
 @connection.connection_handler
-def add_comment_to_question(cursor, question_id, message):
+def add_comment_to_question(cursor, question_id, message, user_id):
     cursor.execute("""
-                    INSERT INTO comment (question_id, message, submission_time, edited_count)
-                    VALUES (%(question_id)s, %(message)s, %(time)s, 0)
+                    INSERT INTO comment (question_id, message, submission_time, edited_count, user_id)
+                    VALUES (%(question_id)s, %(message)s, %(time)s, 0, %(user_id)s)
  """,
-                   {'question_id': question_id, 'message': message, 'time': datetime.now()})
+                   {'question_id': question_id, 'message': message, 'time': datetime.now(), 'user_id': user_id})
 
 
 @connection.connection_handler
@@ -321,5 +322,15 @@ def get_user_name_of_answer(cursor, answer_id):
                     SELECT "user".user_name FROM "user"
                     FULL JOIN answer ON answer.user_id="user".user_id
                     WHERE answer.id = %(answer_id)s """, {'answer_id': answer_id})
+    author = cursor.fetchone()
+    return author
+
+
+@connection.connection_handler
+def get_user_name_of_comment(cursor, _id):
+    cursor.execute(""" 
+    SELECT "user".user_name FROM "user"
+    FULL JOIN comment ON comment.id="user".user_id
+    WHERE comment.id = %(_id)s """, {'_id': _id})
     author = cursor.fetchone()
     return author

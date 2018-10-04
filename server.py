@@ -88,7 +88,7 @@ def edit_question(question_id):
             return redirect(url_for('display_question', _id=question_id, logged_user=session['user_id'],
                                     logged_user_name=session['user_name']))
     else:
-        return redirect(url_for('login'))
+        return render_template('login.html', error_message=datamanager.error_message)
 
 
 @app.route('/edit/<question_id>/<answer_id>', methods=['GET', 'POST'])
@@ -109,26 +109,31 @@ def edit_answer(answer_id, question_id):
                                 logged_user_name=session['user_name'],
                                 ))
     else:
-        return redirect(url_for('login'))  # TODO: error message
+        return render_template('login.html', error_message=datamanager.error_message)
 
 
 @app.route('/question/<question_id>/delete')
 def delete_question(question_id):
-    # TODO: You should only be able to delete your own question
-    user_of_question = datamanager.get_question_by_id(question_id)
-    if session['user_id'] == user_of_question['user_id']:
-        datamanager.delete_question(question_id)
-        return redirect('/')
+    author = datamanager.get_user_name_of_question(question_id)
+    if author['user_name'] == session['user_name']:
+        user_of_question = datamanager.get_question_by_id(question_id)
+        if session['user_id'] == user_of_question['user_id']:
+            datamanager.delete_question(question_id)
+            return redirect('/')
+        else:
+            return redirect(url_for('login'))
     else:
         return redirect(url_for('login'))
 
 
 @app.route('/<question_id>/answer/<_id>/delete')
 def delete_answer(question_id, _id):
-    #TODO: You should only be able to delete your own answer
-
-    datamanager.delete_one_answer(_id)
-    return redirect(url_for('display_question', _id=question_id))
+    author = datamanager.get_user_name_of_answer(_id)
+    if author['user_name'] == session['user_name']:
+        datamanager.delete_one_answer(_id)
+        return redirect(url_for('display_question', _id=question_id))
+    else:
+        return render_template('login.html', error_message=datamanager.error_message)
 
 
 @app.route('/list')
@@ -193,13 +198,12 @@ def search_questions():
 
 @app.route("/question/<question_id>/add-comment", methods=['GET', 'POST'])
 def add_comment_to_question(question_id):
-    #TODO: Put in DB the author of comments
     if session['user_id'] != 0:
         if request.method == 'GET':
             return render_template('add-comment.html', question_id=question_id, logged_user=session['user_id'],
                                    logged_user_name=session['user_name'])
         message = request.form['message']
-        datamanager.add_comment_to_question(question_id, message)
+        datamanager.add_comment_to_question(question_id, message, session['user_id'])
         return redirect(url_for('display_question', _id=question_id))
     else:
         return redirect(url_for('login'))
@@ -207,24 +211,28 @@ def add_comment_to_question(question_id):
 
 @app.route('/edit/<question_id>/comment/<_id>', methods=['GET', 'POST'])
 def edit_comment(question_id, _id):
-    #TODO: You should only be able to edit your own comment
-
-    if request.method == 'GET':
-        return render_template('edit-comment.html',
-                               comment=datamanager.get_comment_by_comment_id(_id),
-                               question_id=question_id, logged_user=session['user_id'],
-                               logged_user_name=session['user_name'])
-    edited_comment = request.form.to_dict()
-    datamanager.edit_comment_by_id(edited_comment, _id)
-    return redirect(url_for('display_question', _id=question_id))
+    author = datamanager.get_user_name_of_comment(_id)
+    if author['user_name'] == session['user_name']:
+        if request.method == 'GET':
+            return render_template('edit-comment.html',
+                                   comment=datamanager.get_comment_by_comment_id(_id),
+                                   question_id=question_id, logged_user=session['user_id'],
+                                   logged_user_name=session['user_name'])
+        edited_comment = request.form.to_dict()
+        datamanager.edit_comment_by_id(edited_comment, _id)
+        return redirect(url_for('display_question', _id=question_id))
+    else:
+        return render_template('login.html', error_message=datamanager.error_message)
 
 
 @app.route('/<question_id>/comment/<_id>/delete')
 def delete_comment(question_id, _id):
-    #TODO: You should only be able to delete your own comment
-
-    datamanager.delete_one_comment(_id)
-    return redirect(url_for('display_question', _id=question_id))
+    author = datamanager.get_user_name_of_comment(_id)
+    if author['user_name'] == session['user_name']:
+        datamanager.delete_one_comment(_id)
+        return redirect(url_for('display_question', _id=question_id))
+    else:
+        return render_template('login.html', error_message=datamanager.error_message)
 
 
 @app.route('/registration', methods=['GET', 'POST'])
