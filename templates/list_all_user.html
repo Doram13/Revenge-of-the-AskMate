@@ -2,20 +2,28 @@
 
 {% block content %}
 
-<div class="container"><table class="table-striped">
-    <tr>
-    {% for title in header %}
-        <th>{{ title }}</th>
-    {% endfor %}
-    </tr>
-    {% for user in list_of_users %}
-    <tr>
-        <td>{{ user['user_id'] }}</td>
-        <td>{{ user['user_name'] }}</td>
-        <td>{{ user['date'] }}</td>
-    </tr>
-    {% endfor %}
-</table></div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <table class="table table-striped">
+                <thead class="thead-light">
+                <tr>
+                {% for title in header %}
+                    <th colspan="">{{ title }}</th>
+                {% endfor %}
+                </tr><
+                </thead>
+                {% for user in list_of_users %}
+                <tr>
+                    <td>{{ user['user_id'] }}</td>
+                    <td>{{ user['user_name'] }}</td>
+                    <td>{{ user['date'] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
 {% include 'footer.html' %}
 
 {% endblock %}
