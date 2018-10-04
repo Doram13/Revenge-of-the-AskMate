@@ -71,10 +71,10 @@
                     <td style="width:5%" align="center">{{ answer["submission_time"] }}</td>
                     <td style="width:10%" align="center">
                         {% if logged_user != 0 %}
-                        <a href="/question/{{ question['id'] }}/answer/{{ answer["id"] }}/up">↥</a>
+                            <a href="/question/{{ question['id'] }}/answer/{{ answer["id"] }}/up">↥</a>
                         {{ answer["vote_number"] }} <a href="/question/{{ question['id'] }}/answer/{{ answer["id"] }}/down">↧</a>
                         {% else %}
-                        {{ answer["vote_number"] }}
+                            {{ answer["vote_number"] }}
                         {% endif %}
                     </td>
                     <td style="width:60%" align="center">{{ answer["message"] }}</td>
@@ -86,12 +86,13 @@
                     <td style="width:5%" align="center">
                         {% if logged_user != 0 %}
                         <form>
-                            <button formaction="/{{ answer['question_id'] }}/answer/{{ answer["id"] }}/delete">Delete</button>
+                            <button formaction="/{{ answer['question_id'] }}/answer/{{ answer["id"] }}/delete">Delete
+                            </button>
                         </form>
                         <td align="center">
-                        <form>
-                            <button formaction="/edit/{{ answer["question_id"] }}/{{ answer["id"] }}">Edit</button>
-                        </form>
+                            <form>
+                                <button formaction="/edit/{{ answer["question_id"] }}/{{ answer["id"] }}">Edit</button>
+                            </form>
                         {% endif %}
 
                     </td>
