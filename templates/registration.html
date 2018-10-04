@@ -2,17 +2,39 @@
 
 {% block content %}
 
-    <div class="card-row">
-        <form method="POST" action="{{ url_for("registration") }}">
-            <label for="user_name">User Name:</label>
-            <input type="text" id="user_name" name="user_name">
-            <label for="password">Password</label>
-            <input type="text" id="password" name="password">
-            <button type="submit"> Submit</button>
+    <div class="container" id="login">
+        <form method="POST" action="{{ url_for('registration') }}">
+            <div class="row justify-content-center">
+                <div class="col col-sm-4" >
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>
+                                <label for="user_name">User Name:</label>
+                                <input type="text" placeholder="username" id="user_name" name="user_name">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="password">Password:</label>
+                                <input type="text" id="password" placeholder="password" name="password">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <button type="submit">Register</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </form>
-        {% if used_user_name == 1 %}
-            <p> Your User name is already used, please choose another one.</p>
-        {% endif %}
+        <div class="row justify-content-center">
+            <div class="col-sm-4 col-centered">
+                {% if message %}
+                    <h3 class="text-primary"> {{message}}</h3>
+                {% endif %}
+            </div>
+        </div>
     </div>
 {% include 'footer.html' %}
 {% endblock %}

@@ -11,10 +11,6 @@ table.table-striped {
     background-color: lightblue;
 }
 
-h3 {
-    align-self: center;
-}
-
 footer {
     justify-content: center;
 }
@@ -54,4 +50,8 @@ form {
     flex-flow: column wrap;
     align-items: center;
 
+}
+
+div.col#login_col {
+    width: fit-content;
 }

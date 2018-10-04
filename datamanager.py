@@ -8,7 +8,7 @@ answer_header = ['id', 'submission time', 'vote number', 'message', 'image', ' '
 error_message = "You have to be logged in!"
 error_message_wrong_user = "You are not authorized!"
 comment_header = ["message", "submission time", 'edited number']
-user_header = ['id', 'Name', 'Registered:']
+user_header = ['id', 'Name', 'Registered:', 'Reputation']
 
 @connection.connection_handler
 def first_5_question(cursor):
@@ -371,7 +371,7 @@ def get_questions_by_user_id(cursor, user_id):
                    WHERE user_id = %(user_id)s""",
                    {'user_id': user_id})
     questions = cursor.fetchall()
-    return questions
+    return utils.get_readable_date(questions)
 
 
 @connection.connection_handler
@@ -381,7 +381,7 @@ def get_answers_by_user_id(cursor, user_id):
                    WHERE user_id = %(user_id)s""",
                    {'user_id': user_id})
     answers = cursor.fetchall()
-    return answers
+    return utils.get_readable_date(answers)
 
 
 @connection.connection_handler
@@ -390,5 +390,5 @@ def get_comments_by_user_id(cursor, user_id):
                    SELECT * FROM comment
                    WHERE user_id = %(user_id)s""",
                    {'user_id': user_id})
-    comments = cursor.fetchall
-    return comments
+    comments = cursor.fetchall()
+    return utils.get_readable_date(comments)

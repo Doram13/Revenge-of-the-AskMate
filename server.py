@@ -247,7 +247,7 @@ def registration():
     new_user_name = request.form['user_name']
     if datamanager.check_unique_user_name(new_user_name):
         return render_template('registration.html', logged_user=session['user_id'],
-                               logged_user_name=session['user_name'])
+                               logged_user_name=session['user_name'], message="Already exists!")
     hashed = utils.hash_password(request.form['password'])
     datamanager.create_user(new_user_name, hashed)
     return redirect('/')
@@ -317,7 +317,9 @@ def user_details(user_id):
     return render_template('my_activity.html',
                            questions=questions,
                            answers=answers,
-                           comments=comments)
+                           comments=comments,
+                           logged_user=session['user_id'],
+                           logged_user_name=session['user_name'])
 
 
 if __name__ == "__main__":
