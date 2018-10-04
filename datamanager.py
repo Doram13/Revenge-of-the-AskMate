@@ -8,7 +8,7 @@ answer_header = ['id', 'submission time', 'vote number', 'message', 'image', ' '
 error_message = "You have to be logged in!"
 error_message_wrong_user = "You are not authorized!"
 comment_header = ["message", "submission time", 'edited number']
-user_header = ['ID', 'Name', 'Registered:', 'Reputation']
+user_header = ['id', 'Name', 'Registered:']
 
 @connection.connection_handler
 def first_5_question(cursor):
@@ -354,12 +354,3 @@ def accept_answer(cursor, a_id):
     SET accepted = TRUE
     WHERE id=%(a_id)s
     """, {'a_id': a_id})
-
-
-@connection.connection_handler
-def change_reputation(cursor, user_name, change):
-    cursor.execute("""
-    UPDATE "user"
-    SET reputation = %(change)s
-    WHERE user_name = %(user_name)s
-    """, {'change': change, 'user_name': user_name})

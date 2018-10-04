@@ -94,8 +94,13 @@
                                 <button formaction="/edit/{{ answer["question_id"] }}/{{ answer["id"] }}">Edit</button>
                             </form>
                         {% endif %}
+                        </td>
 
-                    </td>
+                    {% if answer['accepted'] == True %}
+                    <td>  Verified!  </td>
+                    {% else %}
+                    <td> X</td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         </table>

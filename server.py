@@ -311,7 +311,7 @@ def accept_answer(a_id, question_id):
 
 @app.route('/user/<user_id>')
 def user_details(user_id):
-    pass
+    questions_by_user = datamanager.get_que
 
 
 if __name__ == "__main__":
