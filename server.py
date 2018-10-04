@@ -289,9 +289,10 @@ def logout():
 
 @app.route('/userlist')
 def list_all_user():
-    return render_template('list_all_user.html', list_of_users=utils.get_readable_date_for_users(datamanager.get_user_infos()),
+    return render_template('list_all_user.html',
+                           list_of_users=utils.get_readable_date_for_users(datamanager.get_user_infos()),
                            header=datamanager.user_header, logged_user=session['user_id'],
-                               logged_user_name=session['user_name'])
+                           logged_user_name=session['user_name'])
 
 
 if __name__ == "__main__":
