@@ -3,11 +3,12 @@ import utils
 from datetime import datetime
 from psycopg2 import sql
 
-list_header = ['id', 'submission_time', 'view_number', 'vote_number', 'title']
+list_header = ['id', 'submission time', 'view number', 'vote_number', 'title']
 answer_header = ['id', 'submission time', 'vote number', 'message', 'image', ' ', ' ', 'accepted']
 error_message = "You have to be logged in!"
 error_message_wrong_user = "You are not authorized!"
 comment_header = ["message", "submission time", 'edited number']
+user_header = ['user ID', 'Name', 'Reg. date', 'Reputation']
 
 def get_first_five_question():
     return utils.get_first_five_dictionary(get_questions())
