@@ -57,14 +57,15 @@ def get_user_id_of_question(cursor, question_id):
 
 
 @connection.connection_handler
-def append_question(cursor, message, title, image):
+def append_question(cursor, message, title, image, user_id):
     cursor.execute("""
-                    INSERT INTO question (submission_time, view_number, vote_number, title, message, image)
-                    VALUES (%(submission_time)s, 0, 0, %(title)s, %(message)s, %(image)s);
+                    INSERT INTO question (submission_time, view_number, vote_number, title, message, image, user_id)
+                    VALUES (%(submission_time)s, 0, 0, %(title)s, %(message)s, %(image)s, %(user_id)s);
                     SELECT id FROM question
                     ORDER BY id DESC LIMIT 1;
                     """,
-                   {'submission_time': datetime.now(), 'title': title, 'message': message, 'image': image})
+                   {'submission_time': datetime.now(), 'title': title, 'message': message, 'image': image,
+                    'user_id': user_id})
     _id = cursor.fetchall()
     return _id[0]['id']
 
@@ -90,12 +91,13 @@ def get_answer_answer_id(cursor, _id):
 
 
 @connection.connection_handler
-def append_answer(cursor, question_id, message, image):
+def append_answer(cursor, question_id, message, image, user_id):
     cursor.execute("""
-                    INSERT INTO answer (submission_time, vote_number, question_id, message, image) 
-                    VALUES (%(time)s, 0, %(question_id)s, %(message)s, %(image)s)
+                    INSERT INTO answer (submission_time, vote_number, question_id, message, image, user_id) 
+                    VALUES (%(time)s, 0, %(question_id)s, %(message)s, %(image)s, %(user_id)s)
                     """,
-                   {'time': datetime.now(), 'question_id': question_id, 'message': message, 'image': image})
+                   {'time': datetime.now(), 'question_id': question_id, 'message': message, 'image': image,
+                    'user_id': user_id})
 
 
 @connection.connection_handler
@@ -303,6 +305,27 @@ def get_user_name_by_id(cursor, user_id):
     return user_name
 
 
+
+@connection.connection_handler
+def get_user_name_of_question(cursor, question_id):
+    cursor.execute("""
+                    SELECT "user".user_name FROM "user"
+                    JOIN question ON question.user_id="user".user_id
+                    WHERE question.id = %(question_id)s """, {'question_id': question_id})
+    author = cursor.fetchone()
+    return author
+
+
+@connection.connection_handler
+def get_user_name_of_answer(cursor, answer_id):
+    cursor.execute("""
+                    SELECT "user".user_name FROM "user"
+                    FULL JOIN answer ON answer.user_id="user".user_id
+                    WHERE answer.id = %(answer_id)s """, {'answer_id': answer_id})
+    author = cursor.fetchone()
+    return author
+  
+  
 @connection.connection_handler
 def get_user_infos(cursor):
     cursor.execute("""
@@ -311,3 +334,4 @@ def get_user_infos(cursor):
                     """)
     users = cursor.fetchall()
     return users
+
