@@ -13,13 +13,19 @@
     {% endif %}
 <br>
 <br>
+    {% if logged_user != 0 %}
     <h5>Vote Number: </h5>
     <h5><a href="/question/{{ question["id"] }}/up">↥</a>{{ question["vote_number"] }} vote(s) <a
             href="/question/{{ question["id"] }}/down">↧</a></h5>
-    {{ question("image") if image is defined }}
+    {% else %}
+    <h5>Vote Number: </h5>
+    {{ question["vote_number"] }} vote(s)
+    {% endif %}
+
+    {{ question["image"] if image is defined }}
 
 
-        <table class="table-striped">
+        <table class="table-sm">
         {% if comments %}
         {% for title in comment_header %}
             <th class="text-center">{{ title }}</th>
@@ -31,18 +37,24 @@
                 <td align="center" >{{comment['submission_time']}}</td>
                 <td align="center" >{{comment['edited_count']}}</td>
                 <td align="center">
+                {% if logged_user != 0 %}
                 <form>
                     <button formaction="/{{ comment['question_id'] }}/comment/{{ comment["id"] }}/delete"> Delete</button>
                 </form>
-                <td style="width:5%" align="center">
+                <td align="center">
                 <form>
                     <button formaction="/edit/{{ comment["question_id"] }}/comment/{{ comment["id"] }}"> Edit</button>
-                </form>
-            </td>
+                </form></td>
+                {% endif %}
+
+
+
             </tr>
         {% endfor %}
         {% endif %}
+        {% if logged_user != 0 %}
             <tr><td align="center" colspan="6"><a href="{{ url_for("add_comment_to_question", question_id = question['id']) }}">Add new comment</a></td></tr>
+        {% endif %}
         </table>
 
 

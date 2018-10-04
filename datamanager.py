@@ -5,7 +5,7 @@ from psycopg2 import sql
 
 list_header = ['id', 'submission_time', 'view_number', 'vote_number', 'title']
 answer_header = ['id', 'submission time', 'vote number', 'message', 'image', 'delete', 'edit']
-comment_header = ["message", "submission time", 'edited number', 'delete', 'edit']
+comment_header = ["message", "submission time", 'edited number']
 user_header = ['id', 'Name', 'Registered:']
 
 @connection.connection_handler
@@ -149,7 +149,7 @@ def order_list_by_key(cursor, col, order):
                 format(col=sql.Identifier(col))
         )
         new_list = cursor.fetchall()
-        return new_list
+        return utils.get_readable_date(new_list)
     elif order == "desc":
         cursor.execute(
             sql.SQL("""
@@ -158,7 +158,7 @@ def order_list_by_key(cursor, col, order):
                 format(col=sql.Identifier(col))
         )
         new_list = cursor.fetchall()
-        return new_list
+        return utils.get_readable_date(new_list)
 
 
 @connection.connection_handler
