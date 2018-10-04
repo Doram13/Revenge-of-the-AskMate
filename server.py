@@ -319,6 +319,7 @@ def user_details(user_id):
                            answers=answers,
                            comments=comments)
 
+
 if __name__ == "__main__":
     app.secret_key = 'very_secret_secret_key'
     app.run(
