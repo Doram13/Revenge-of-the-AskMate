@@ -4,7 +4,7 @@ from datetime import datetime
 from psycopg2 import sql
 
 list_header = ['id', 'submission_time', 'view_number', 'vote_number', 'title']
-answer_header = ['id', 'submission time', 'vote number', 'message', 'image', 'delete', 'edit']
+answer_header = ['id', 'submission time', 'vote number', 'message', 'image', 'delete', 'edit', 'accepted']
 error_message = "You are not allowed to modify this, because you're not the author of it"
 comment_header = ["message", "submission time", 'edited number']
 user_header = ['id', 'Name', 'Registered:']
@@ -345,3 +345,11 @@ def get_user_name_of_comment(cursor, _id):
     author = cursor.fetchone()
     return author
 
+
+@connection.connection_handler
+def accept_answer(cursor, a_id):
+    cursor.execute("""
+    UPDATE answer
+    SET accepted = True
+    WHERE id=%(a_id)s
+    """, {'a_id': a_id})
