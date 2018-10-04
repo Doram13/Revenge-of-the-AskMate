@@ -3,7 +3,7 @@
     <h1>Ask Mate</h1>
 </div>
 <div class="container" align="right">
-    <form method="POST" action="{{ url_for(" search_questions ") }}">
+    <form method="POST" action="{{ url_for("search_questions") }}">
         <input id="search" type="text" name="search" size="20">
         <button type="submit">Search</button>
     </form>
@@ -20,15 +20,15 @@
             {% endfor %}
         </tr>
         {% for question in questions %}
-            <tr>
-                <td align="center">
-                    <a href="/question/{{ question[" id "] }}"> {{ question["id"] }} </a>
-                </td>
-                <td align="center">{{ question["submission_time"] }}</td>
-                <td align="center">{{ question["view_number"] }} view(s)</td>
-                <td align="center">{{ question["vote_number"] }} vote(s)</td>
-                <td align="center">{{ question["title"] }} </td>
-            </tr>
+        <tr>
+            <td align="center">
+                <a href="/question/{{ question["id"] }}"> {{ question["id"] }} </a>
+            </td>
+            <td align="center">{{ question["submission_time"] }}</td>
+            <td align="center">{{ question["view_number"] }} view(s)</td>
+            <td align="center">{{ question["vote_number"] }} vote(s)</td>
+            <td align="center">{{ question["title"] }} </td>
+        </tr>
         {% endfor %}
     </table>
     {% if main_page == 1 %}
