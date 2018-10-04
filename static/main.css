@@ -18,3 +18,40 @@ h3 {
 footer {
     justify-content: center;
 }
+
+.card-row {
+    align-self: center;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.card {
+    flex-basis: 400px;
+    display: flex;
+    flex-flow: column nowrap;
+    background-color: white;
+    margin: 10px;
+    padding: 20px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, .6);
+    border-radius: 4px;
+    align-items: center;
+}
+
+body {
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+}
+
+form {
+    min-width: 0;
+    margin-top: 20px;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+
+}
