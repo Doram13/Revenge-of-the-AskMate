@@ -13,9 +13,10 @@
     <table class="table table-striped">
         <tr>
             {% for item in header %}
-            <th class="text-center"><a href="/ordered-list?order_by={{ item }}&order_direction=desc">↧</a> {{ item }}
-                <a href="/ordered-list?order_by={{ item }}&order_direction=asc">↥</a>
-            </th>
+                <th class="text-center"><a
+                        href="/ordered-list?order_by={{ item }}&order_direction=desc">↧</a> {{ item }}
+                    <a href="/ordered-list?order_by={{ item }}&order_direction=asc">↥</a>
+                </th>
             {% endfor %}
         </tr>
         {% for question in questions %}
@@ -31,7 +32,7 @@
         {% endfor %}
     </table>
     {% if main_page == 1 %}
-    <h3><a href='/list'>List all question</a></h3> {% elif main_page == 0 %} {% include 'footer.html' %} {% endif %}
+        <h3><a href='/list'>List all question</a></h3> {% elif main_page == 0 %} {% include 'footer.html' %} {% endif %}
 </div>
 
 {% endblock %}

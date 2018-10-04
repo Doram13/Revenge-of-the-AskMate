@@ -1,8 +1,9 @@
 
-header  {
+header {
     display: inline-block;
 }
-header #list_all_user   {
+
+header #list_all_user {
     align-self: flex-end;
 }
 
@@ -10,10 +11,10 @@ table.table-striped {
     background-color: lightblue;
 }
 
-h3{
+h3 {
     align-self: center;
 }
 
-footer  {
+footer {
     justify-content: center;
 }
