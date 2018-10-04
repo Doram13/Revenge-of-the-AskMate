@@ -109,7 +109,7 @@ def edit_answer(answer_id, question_id):
                                 logged_user_name=session['user_name'],
                                 ))
     else:
-        return redirect(url_for('login'))
+        return redirect(url_for('login'))  # TODO: error message
 
 
 @app.route('/question/<question_id>/delete')
