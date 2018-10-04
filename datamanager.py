@@ -363,3 +363,33 @@ def change_reputation(cursor, user_name, change):
     SET reputation = %(change)s
     WHERE user_name = %(user_name)s
     """, {'change': change, 'user_name': user_name})
+
+
+@connection.connection_handler
+def get_questions_by_user_id(cursor, user_id):
+    cursor.execute("""
+                   SELECT * FROM question
+                   WHERE user_id = %(user_id)s""",
+                   {'user_id': user_id})
+    questions = cursor.fetchall()
+    return questions
+
+
+@connection.connection_handler
+def get_answers_by_user_id(cursor, user_id):
+    cursor.execute("""
+                   SELECT * FROM answer
+                   WHERE user_id = %(user_id)s""",
+                   {'user_id': user_id})
+    answers = cursor.fetchall()
+    return answers
+
+
+@connection.connection_handler
+def get_comments_by_user_id(cursor, user_id):
+    cursor.execute("""
+                   SELECT * FROM comment
+                   WHERE user_id = %(user_id)s""",
+                   {'user_id': user_id})
+    comments = cursor.fetchall
+    return comments
