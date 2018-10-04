@@ -94,8 +94,8 @@ def get_answer_answer_id(cursor, _id):
 @connection.connection_handler
 def append_answer(cursor, question_id, message, image, user_id):
     cursor.execute("""
-                    INSERT INTO answer (submission_time, vote_number, question_id, message, image, user_id) 
-                    VALUES (%(time)s, 0, %(question_id)s, %(message)s, %(image)s, %(user_id)s)
+                    INSERT INTO answer (submission_time, vote_number, question_id, message, image, user_id, accepted) 
+                    VALUES (%(time)s, 0, %(question_id)s, %(message)s, %(image)s, %(user_id)s, FALSE )
                     """,
                    {'time': datetime.now(), 'question_id': question_id, 'message': message, 'image': image,
                     'user_id': user_id})
@@ -350,6 +350,6 @@ def get_user_name_of_comment(cursor, _id):
 def accept_answer(cursor, a_id):
     cursor.execute("""
     UPDATE answer
-    SET accepted = True
+    SET accepted = TRUE
     WHERE id=%(a_id)s
     """, {'a_id': a_id})
