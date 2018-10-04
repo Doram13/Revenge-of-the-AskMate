@@ -311,7 +311,13 @@ def accept_answer(a_id, question_id):
 
 @app.route('/user/<user_id>')
 def user_details(user_id):
-    questions_by_user = datamanager.get_que
+    questions = datamanager.get_questions_by_user_id(user_id)
+    answers = datamanager.get_answers_by_user_id(user_id)
+    comments = datamanager.get_comments_by_user_id(user_id)
+    return render_template('my_activity.html',
+                           questions=questions,
+                           answers=answers,
+                           comments=comments)
 
 
 if __name__ == "__main__":
