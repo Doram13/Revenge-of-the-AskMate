@@ -4,8 +4,9 @@ from datetime import datetime
 from psycopg2 import sql
 
 list_header = ['id', 'submission_time', 'view_number', 'vote_number', 'title']
-answer_header = ['id', 'submission time', 'vote number', 'message', 'image', 'delete', 'edit', 'accepted']
-error_message = "You are not allowed to modify this, because you're not the author of it"
+answer_header = ['id', 'submission time', 'vote number', 'message', 'image', ' ', ' ', 'accepted']
+error_message = "You have to be logged in!"
+error_message_wrong_user = "You are not authorized!"
 comment_header = ["message", "submission time", 'edited number']
 user_header = ['id', 'Name', 'Registered:']
 
