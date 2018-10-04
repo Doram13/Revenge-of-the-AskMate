@@ -35,7 +35,7 @@ def add_question():
                                 logged_user_name=session['user_name']))
     else:
         return render_template('login.html', logged_user=session['user_id'],
-                               logged_user_name=session['user_name'])
+                               logged_user_name=session['user_name'], error_message=datamanager.error_message)
 
 
 @app.route('/question/<_id>')
@@ -109,7 +109,7 @@ def edit_answer(answer_id, question_id):
                                 logged_user_name=session['user_name'],
                                 ))
     else:
-        return render_template('login.html', error_message=datamanager.error_message)
+        return render_template('login.html', error_message=datamanager.error_message_wrong_user)
 
 
 @app.route('/question/<question_id>/delete')
