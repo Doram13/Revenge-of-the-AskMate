@@ -299,10 +299,10 @@ def list_all_user():
                            logged_user_name=session['user_name'])
 
 
-@app.route('/question/<question_id>/answer/<answer_id>/accept', methods=['GET' 'POST'])
+@app.route('/question/<question_id>/answer/<answer_id>/accept', methods=['GET', 'POST'])
 def accept_answer(answer_id, question_id):
     author = datamanager.get_user_name_of_question(question_id)
-    if author == session['user_name']:
+    if author['user_name'] == session['user_name']:
         datamanager.accept_answer(answer_id)
         datamanager.change_reputation(datamanager.get_user_name_of_answer(answer_id)['user_name'], 15)
         return redirect(url_for('display_question', _id=question_id))

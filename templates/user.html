@@ -1,7 +1,7 @@
 <header>
 <div class="login">
     <h3>Hi, {{logged_user_name}}</h3>
-    <a href="{{ url_for("logout") }}">Logout</a>
+    <a href="{{ url_for("logout") }}">Logout</a><br>
     <a href="{{ url_for("user_details", user_id=logged_user) }}">My activity</a>
 </div>
 </header>
