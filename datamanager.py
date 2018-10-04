@@ -8,6 +8,7 @@ answer_header = ['id', 'submission time', 'vote number', 'message', 'image', 'de
 comment_header = ["message", "submission time", 'edited number', 'delete', 'edit']
 error_message = "You are not allowed to modify this, because you're not the author of it"
 
+user_header = ['id', 'Name', 'Registered:']
 
 @connection.connection_handler
 def first_5_question(cursor):
@@ -327,6 +328,16 @@ def get_user_name_of_answer(cursor, answer_id):
 
 
 @connection.connection_handler
+def get_user_infos(cursor):
+    cursor.execute("""
+                    SELECT * FROM "user"
+                    ORDER BY user_id
+                    """)
+    users = cursor.fetchall()
+    return users
+
+
+@connection.connection_handler
 def get_user_name_of_comment(cursor, _id):
     cursor.execute(""" 
     SELECT "user".user_name FROM "user"
@@ -334,3 +345,4 @@ def get_user_name_of_comment(cursor, _id):
     WHERE comment.id = %(_id)s """, {'_id': _id})
     author = cursor.fetchone()
     return author
+

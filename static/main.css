@@ -1,11 +1,19 @@
-table button {
-            width: 100%
-        }
 
-body{
-    background-color: white;
+header  {
+    display: inline-block;
+}
+header #list_all_user   {
+    align-self: flex-end;
 }
 
-div.login{
+table.table-striped {
+    background-color: lightblue;
+}
 
+h3{
+    align-self: center;
+}
+
+footer  {
+    justify-content: center;
 }
